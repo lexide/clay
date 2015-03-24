@@ -43,11 +43,11 @@ trait DataTypeHandlingTrait
 
     protected function handleSetFile($filePath, $normalisePath = true)
     {
-        if ($normalisePath) {
-            $filePath = realpath($filePath);
-        }
         if (!file_exists($filePath)) {
             throw new ModelException("Could not set file. File does not exist ($filePath)");
+        }
+        if ($normalisePath) {
+            $filePath = realpath($filePath);
         }
         return $filePath;
     }
