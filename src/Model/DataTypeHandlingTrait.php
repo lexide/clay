@@ -20,9 +20,9 @@ trait DataTypeHandlingTrait
         if (is_string($date)) {
             return new \DateTime($date);
         } elseif (is_int($date)) {
-            $date = new \DateTime();
-            $date->setTimestamp($date);
-            return $date;
+            $dateTime = new \DateTime();
+            $dateTime->setTimestamp($date);
+            return $dateTime;
         } elseif ($date instanceof \DateTime) {
             return $date;
         }
@@ -41,4 +41,4 @@ trait DataTypeHandlingTrait
         return $date;
     }
 
-} 
+}
