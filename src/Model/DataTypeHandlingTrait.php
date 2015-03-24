@@ -41,4 +41,15 @@ trait DataTypeHandlingTrait
         return $date;
     }
 
+    protected function handleSetFile($filePath, $normalisePath = true)
+    {
+        if ($normalisePath) {
+            $filePath = realpath($filePath);
+        }
+        if (!file_exists($filePath)) {
+            throw new ModelException("Could not set file. File does not exist ($filePath)");
+        }
+        return $filePath;
+    }
+
 }
