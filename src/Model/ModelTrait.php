@@ -6,6 +6,7 @@ namespace Downsider\Clay\Model;
  */
 trait ModelTrait 
 {
+    use NameConverterTrait;
 
     protected function loadData(array $data)
     {
@@ -99,19 +100,6 @@ trait ModelTrait
         return $data;
     }
 
-    private function toStudlyCaps($string)
-    {
-        return str_replace( // remove the spaces
-            " ",
-            "",
-            ucwords( // uppercase the 1st letter of each word
-                str_replace( // replace underscores with spaces
-                    "_",
-                    " ",
-                    $string
-                )
-            )
-        );
-    }
+
 
 } 
