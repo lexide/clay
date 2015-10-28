@@ -11,6 +11,11 @@ trait ModelTrait
     protected function loadData(array $data)
     {
         foreach ($data as $prop => $value) {
+
+            if (is_null($value)) {
+                // skip nulls
+                continue;
+            }
             // studly caps the property name
             $prop = $this->toStudlyCaps($prop);
 
