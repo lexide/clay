@@ -17,6 +17,11 @@ trait DataTypeHandlingTrait
      */
     protected function handleSetDate($date)
     {
+        // check case where $date is a timestamp inside a string
+        if (is_string($date) && $date === (string) (int) $date) {
+            $date = (int) $date;
+        }
+
         if (is_string($date)) {
             return new \DateTime($date);
         } elseif (is_int($date)) {
