@@ -56,16 +56,20 @@ class DataTypeHandlingTraitTest extends \PHPUnit_Framework_TestCase {
     public function handleDateProvider()
     {
         return [
-            [ // with a string
+            [ #0 with a string
                 "2015-01-26",
                 "2015-01-26"
             ],
-            [ // with a datetime object
+            [ #1 with a datetime object
                 new \DateTime("2015-01-26"),
                 "2015-01-26"
             ],
-            [ // with an invalid value (throws exception)
-                20150126,
+            [ #2 with a timestamp
+                strtotime("2015-01-26"),
+                "2015-01-26"
+            ],
+            [ #3 with an invalid value (throws exception)
+                ["blah"],
                 null,
                 true
             ]
