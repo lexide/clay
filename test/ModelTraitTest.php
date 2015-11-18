@@ -10,6 +10,17 @@ use Downsider\Clay\Test\Implementation\ModelTraitImplementation;
  */
 class ModelTraitTest extends \PHPUnit_Framework_TestCase {
 
+    protected $defaultProperties =[
+        "prop1" => null,
+        "prop2" => null,
+        "prop3" => null,
+        "camelCaseProp1" => null,
+        "camelCaseProp2" => null,
+        "objectProp" => null,
+        "arrayProp" => null,
+        "collectionProp" => null
+    ];
+
     /**
      * @dataProvider setDataProvider
      *
@@ -159,27 +170,27 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     "setProp2" => "value2",
                     "setProp3" => "value3"
                 ],
-                [
+                array_replace($this->defaultProperties, [
                     "prop1" => "value1",
                     "prop2" => "value2",
                     "prop3" => "value3"
-                ]
+                ])
             ],
             [ // #2 array attributes
                 [
                     "setArrayProp" => [1, 2, 3, 4, 5]
                 ],
-                [
+                array_replace($this->defaultProperties, [
                     "arrayProp" => [1, 2, 3, 4, 5]
-                ]
+                ])
             ],
             [  // #3 model attributes
                 [
                     "setObjectProp" => new ModelTraitImplementation($subModel1)
                 ],
-                [
-                    "objectProp" => $subModel1
-                ]
+                array_replace($this->defaultProperties, [
+                    "objectProp" => array_replace($this->defaultProperties, $subModel1)
+                ])
             ],
             [  // #3 model collection attributes
                 [
@@ -188,9 +199,9 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                         new ModelTraitImplementation($subModel1)
                     ]
                 ],
-                [
-                    "collectionProp" => [$subModel2, $subModel1]
-                ]
+                array_replace($this->defaultProperties, [
+                    "collectionProp" => [array_replace($this->defaultProperties, $subModel2), array_replace($this->defaultProperties, $subModel1)]
+                ])
             ]
         ];
     }
