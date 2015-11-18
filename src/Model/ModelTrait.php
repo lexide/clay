@@ -58,9 +58,7 @@ trait ModelTrait
             $getter = "get" . ucfirst($prop);
             if (method_exists($this, $getter)) {
                 $value = $this->{$getter}();
-                if (!is_null($value)) {
-                    $data[$prop] = $this->getValueData($value);
-                }
+                $data[$prop] = $this->getValueData($value);
             }
         }
         return $data;
