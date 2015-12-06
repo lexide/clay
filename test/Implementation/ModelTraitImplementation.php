@@ -1,8 +1,7 @@
 <?php
-/**
- * Silktide Nibbler. Copyright 2013-2014 Silktide Ltd. All Rights Reserved.
- */
+
 namespace Downsider\Clay\Test\Implementation;
+
 use Downsider\Clay\Model\ModelTrait;
 
 /**

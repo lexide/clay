@@ -1,4 +1,5 @@
 <?php
+
 namespace Downsider\Clay\Exception;
 
 /**

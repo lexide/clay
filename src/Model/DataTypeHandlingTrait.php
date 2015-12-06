@@ -1,5 +1,7 @@
 <?php
+
 namespace Downsider\Clay\Model;
+
 use Downsider\Clay\Exception\ModelException;
 
 /**

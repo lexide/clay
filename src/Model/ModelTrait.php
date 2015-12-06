@@ -8,6 +8,8 @@ trait ModelTrait
 {
     use NameConverterTrait;
 
+    protected $modelConstructorArgs = [];
+
     protected function loadData(array $data)
     {
         foreach ($data as $prop => $value) {
@@ -77,10 +79,10 @@ trait ModelTrait
         if (!empty($class)) {
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
-                    $value[$i] = $class->newInstance($subValue);
+                    $value[$i] = $class->newInstanceArgs(array_merge([$subValue], $this->modelConstructorArgs));
                 }
             } else {
-                $value = $class->newInstance($value);
+                $value = $class->newInstance(array_merge([$value], $this->modelConstructorArgs));
             }
         }
         return $value;
