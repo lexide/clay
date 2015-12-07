@@ -10,12 +10,14 @@ trait ModelTrait
 
     protected $modelConstructorArgs = [];
 
-    protected function loadData(array $data)
+    protected $modelCanBeUpdated = true;
+
+    protected function loadData(array $data, $update = false, $replaceCollections = false)
     {
         foreach ($data as $prop => $value) {
 
-            if (is_null($value)) {
-                // skip nulls
+            if (is_null($value) && !$update) {
+                // nulls can be ignored if we're not updating
                 continue;
             }
             // studly caps the property name
@@ -37,6 +39,15 @@ trait ModelTrait
                         $isCollection = true;
                     }
                     $value = $this->constructClasses($param, $value, $isCollection);
+
+                    // if we have a collection and we're updating them ...
+                    if ($isCollection && $update && !$replaceCollections) {
+                        // ... add each element instead of replacing the whole set
+                        foreach ($value as $element) {
+                            $this->{$adder}($element);
+                        }
+                        continue;
+                    }
                 }
                 $this->{$setter}($value);
             } else {
@@ -48,6 +59,14 @@ trait ModelTrait
                 }
             }
 
+        }
+    }
+
+    public function updateData(array $data, $replaceCollections = false)
+    {
+        // only update if we're allowed
+        if ($this->modelCanBeUpdated) {
+            $this->loadData($data, true, $replaceCollections);
         }
     }
 
