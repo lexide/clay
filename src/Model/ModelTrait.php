@@ -101,7 +101,7 @@ trait ModelTrait
                     $value[$i] = $class->newInstanceArgs(array_merge([$subValue], $this->modelConstructorArgs));
                 }
             } else {
-                $value = $class->newInstance(array_merge([$value], $this->modelConstructorArgs));
+                $value = $class->newInstanceArgs(array_merge([$value], $this->modelConstructorArgs));
             }
         }
         return $value;
