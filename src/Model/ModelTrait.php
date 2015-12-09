@@ -40,8 +40,15 @@ trait ModelTrait
                     }
                     $value = $this->constructClasses($param, $value, $isCollection);
 
-                    // if we have a collection and we're updating them ...
-                    if ($isCollection && $update && !$replaceCollections) {
+                    // if we have a collection and we're updating it ...
+                    if (
+                        $isCollection &&
+                        $update &&
+                        (
+                            empty($replaceCollections) ||               // don't add if we're replacing all collections
+                            empty($replaceCollections[lcfirst($prop)])  // don't add if this collection has been marked for replacing
+                        )
+                    ) {
                         // ... add each element instead of replacing the whole set
                         foreach ($value as $element) {
                             $this->{$adder}($element);
