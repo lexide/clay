@@ -1,8 +1,24 @@
 <?php
 namespace Downsider\Clay\Model;
+use Downsider\Clay\Exception\ModelException;
 
 /**
- * used to load data into a model
+ * Used to load data into a model
+ *
+ * Where a field can accept a collection of subclasses, type-hinted by a base class, the discriminator map of that base
+ * class identifies which subclass to instantiate for a given set of data
+ *
+ * [
+ *     "discriminatorField" => [child class property to discriminate against] - e.g. "type"
+ *     "subclassNamespace" => [namespace under which the subclasses are located] - defaults to the namespace of the base class
+ *     "subclassSuffix" => [class name suffix to append to the value of the discriminator field] - e.g. ProductItem, ShippingItem, DiscountItem, etc...
+ *     "map" => [
+ *         [discriminator field value] => [partial class name or FQCN]
+ *     ]
+ * ]
+ *
+ * @property $modelDiscriminatorMap array
+ *
  */
 trait ModelTrait 
 {
@@ -103,15 +119,55 @@ trait ModelTrait
     {
         $class = $param->getClass();
         if (!empty($class)) {
+
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
+                    $class = $this->discriminateClass($class, $subValue);
                     $value[$i] = $class->newInstanceArgs(array_merge([$subValue], $this->modelConstructorArgs));
                 }
             } else {
+                $class = $this->discriminateClass($class, $value);
                 $value = $class->newInstanceArgs(array_merge([$value], $this->modelConstructorArgs));
             }
         }
         return $value;
+    }
+
+    private function discriminateClass(\ReflectionClass $class, array $data)
+    {
+        $properties = $class->getDefaultProperties();
+        if (!empty($properties["modelDiscriminatorMap"])) {
+            $discriminator = $properties["modelDiscriminatorMap"];
+            if (empty($discriminator["discriminatorField"])) {
+                throw new ModelException("Cannot use the discriminator map for '{$class->getName()}'. No discriminator field was configured.");
+            }
+            $field = $discriminator["discriminatorField"];
+
+            if (empty($data[$field])) {
+                throw new ModelException("The discriminator field '$field' for '{$class->getName()}' was not found in the data set.");
+            }
+
+            $baseNamespace = !empty($discriminator["subclassNamespace"])? $discriminator["subclassNamespace"]: $class->getNamespaceName();
+            $classNameSuffix = !empty($discriminator["subclassSuffix"])? $discriminator["subclassSuffix"]: "";
+            $map = !empty($discriminator["map"])? $discriminator["map"]: [];
+
+            // generate the class name
+            $value = $data[$field];
+            if (!empty($map[$value])) {
+                $className = $map[$value];
+            } else {
+                $className = $this->toStudlyCaps($value . $classNameSuffix);
+            }
+
+            // if this is not a valid class, try it with the base namespace
+            if (!class_exists($className)) {
+                $className = $baseNamespace . "\\" . $className;
+            }
+
+            // create the reflection object. This will throw an exception if the class does not exist, as is expected.
+            $class = new \ReflectionClass($className);
+        }
+        return $class;
     }
 
     private function getValueData($value)
