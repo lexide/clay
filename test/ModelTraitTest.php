@@ -3,6 +3,7 @@
 namespace Downsider\Clay\Test;
 
 use Downsider\Clay\Test\Implementation\ModelTraitImplementation;
+use Downsider\Clay\Test\Implementation\ParentClass;
 
 /**
  *
@@ -70,6 +71,26 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
         }
 
         $this->assertEquals($expectedArray, $modelTrait->toArray());
+
+    }
+
+    /**
+     * @dataProvider discriminationProvider
+     *
+     * @param $property
+     * @param $propertyData
+     */
+    public function testDiscrimination($property, $propertyData)
+    {
+        $data = [
+            $property => $propertyData
+        ];
+
+        $parent = new ParentClass($data);
+
+        $parent = $parent->toArray();
+
+        $this->assertEquals($propertyData, $parent[$property]);
 
     }
 
@@ -201,6 +222,34 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                 array_replace($this->defaultProperties, [
                     "collectionProp" => [array_replace($this->defaultProperties, $subModel2), array_replace($this->defaultProperties, $subModel1)]
                 ])
+            ]
+        ];
+    }
+
+    public function discriminationProvider()
+    {
+        return [
+            [ #0 simple class loading with suffix
+                "single",
+                ["type" => "name", "id" => 1, "name" => "test"]
+            ],
+            [ #1 mapped class loading with suffix
+                "single",
+                ["type" => "sizeOf", "id" => 1, "count" => 3]
+            ],
+            [ #2 mapped class loading with FQCN
+                "single",
+                ["type" => "weird", "id" => 1, "unusual" => "blubbery"]
+            ],
+            [ #3 multiple class loading of various types
+                "multiple",
+                [
+                    ["type" => "name", "id" => 1, "name" => "test1"],
+                    ["type" => "data", "id" => 1, "data" => [1, 2, 3, 4, 5]],
+                    ["type" => "sizeOf", "id" => 1, "count" => 3],
+                    ["type" => "weird", "id" => 1, "unusual" => "blubbery"],
+                    ["type" => "name", "id" => 1, "name" => "test2"]
+                ]
             ]
         ];
     }
