@@ -153,15 +153,18 @@ trait ModelTrait
 
             // generate the class name
             $value = $data[$field];
-            if (!empty($map[$value])) {
-                $className = $map[$value];
-            } else {
-                $className = $this->toStudlyCaps($value . $classNameSuffix);
+            if (empty($map[$value])) {
+                throw new ModelException("The discriminator value '$value' was not registered in the map");
             }
+
+            $className = ($map[$value] !== true)? $map[$value]: $this->toStudlyCaps($value);
 
             // if this is not a valid class, try it with the base namespace
             if (!class_exists($className)) {
                 $className = $baseNamespace . "\\" . $className;
+                if (!class_exists($className)) {
+                    $className .= $classNameSuffix;
+                }
             }
 
             // create the reflection object. This will throw an exception if the class does not exist, as is expected.
