@@ -2,6 +2,7 @@
 
 namespace Downsider\Clay\Test;
 
+use Downsider\Clay\Exception\ModelException;
 use Downsider\Clay\Test\Implementation\ModelTraitImplementation;
 use Downsider\Clay\Test\Implementation\ParentClass;
 
@@ -92,6 +93,26 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($propertyData, $parent[$property]);
 
+    }
+
+    /**
+     * @dataProvider antiDiscriminationProvider
+     *
+     * @param array $data
+     * @param $exceptionMessagePattern
+     */
+    public function testAntiDiscrimination(array $data, $exceptionMessagePattern)
+    {
+        $data = [
+            "single" => $data
+        ];
+
+        try {
+            $parent = new ParentClass($data);
+            $this->fail("Should not be able to create discriminated subclasses");
+        } catch (ModelException $e) {
+            $this->assertRegExp($exceptionMessagePattern, $e->getMessage());
+        }
     }
 
     public function setDataProvider()
@@ -250,6 +271,20 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     ["type" => "weird", "id" => 1, "unusual" => "blubbery"],
                     ["type" => "name", "id" => 1, "name" => "test2"]
                 ]
+            ]
+        ];
+    }
+
+    public function antiDiscriminationProvider()
+    {
+        return [
+            [ #0 missing discriminator field value
+                ["name" => "blah"],
+                "/'type'/"
+            ],
+            [ #1 discriminator value not in map
+                ["type" => "unknownValue", "name" => "blah"],
+                "/'unknownValue'/"
             ]
         ];
     }

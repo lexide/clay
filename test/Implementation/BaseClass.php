@@ -19,6 +19,9 @@ class BaseClass
         "subclassNamespace" => "Downsider\\Clay\\Test\\Implementation\\SubClasses",
         "subclassSuffix" => "Class",
         "map" => [
+            "name" => true,
+            "data" => true,
+            "count" => true,
             "sizeOf" => "CountClass",
             "weird" => "Downsider\\Clay\\Test\\Implementation\\SubClasses\\NonStandard"
         ]
