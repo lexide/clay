@@ -10,9 +10,7 @@ automatically converting data array keys to camel case when looking for properti
 
 Install via composer
 
-    "require": {
-        "downsider/clay": "*"
-    }
+    composer require downsider/clay
 
 ## Simple Example
 
@@ -34,7 +32,7 @@ To use Clay, a model should use the ModelTrait trait and implement a method whic
 
 The model can then be instantiated, passing data to the constructor
 
-    $data = ["property" => "value, ...];
+    $data = ["property" => "value", ...];
     $model = new Model($data);
 
     echo $model->property; // outputs "value"
@@ -49,7 +47,7 @@ Data with underscored or spaced keys will be applied to their camel case counter
 
 ## Object instantiation
 
-If you want a subset of the returned data to be contained within a second class, you simply need to type-hint the
+If you want a subset of the data to be contained within a second class, you simply need to type-hint the
 supplied argument in a setter
 
     class Address
@@ -111,7 +109,7 @@ determine the class to instantiate
     
         public function setAddresses(array $addresses)
         {
-            $this->address = [];
+            $this->addresses = [];
             foreach ($addresses as $address) {
                 $this->addAddresses($address));
             }
@@ -119,13 +117,13 @@ determine the class to instantiate
     
         public function addAddresses(Address $address)
         {
-            $this->address[] = $address;
+            $this->addresses[] = $address;
         }
     
     }
     
     $data = [
-        "address": [
+        "addresses": [
             [
                 "street" => "1 Test street",
                 "city" => "Exampleton"
