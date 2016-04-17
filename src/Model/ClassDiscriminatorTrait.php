@@ -6,6 +6,7 @@ use Downsider\Clay\Exception\ModelException;
 
 trait ClassDiscriminatorTrait
 {
+    use NameConverterTrait;
 
     private function discriminateClass(\ReflectionClass $class, array $data)
     {

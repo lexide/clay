@@ -22,7 +22,6 @@ use Downsider\Clay\Exception\ModelException;
  */
 trait ModelTrait 
 {
-    use NameConverterTrait;
     use ClassDiscriminatorTrait;
 
     protected $modelConstructorArgs = [];
