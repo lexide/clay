@@ -1,10 +1,9 @@
 # Clay
 
 Clay allows you to populate a model object with an array of data (from a database or other data store) without having to
-manually apply the values by hand. The data array is parsed against the properties of the model and data is applied
-automatically directly or via setters if they are available.
-Clay supports array data and properties which contain other objects (in a multi layered data structure) as well as
-automatically converting data array keys to camel case when looking for properties in the model.
+manually apply the values by hand. Data is applied to the model based on the name of each property, either directly or via setters if they are available.
+Clay supports nested array data and properties which contain other objects (in a multi layered data structure) as well as
+automatically converting keys to camel case when applying data to the model.
 
 ## installation
 
