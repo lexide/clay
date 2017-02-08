@@ -21,6 +21,6 @@ trait NameConverterTrait
 
     private function toSplitCase($string, $separator = "_")
     {
-        return strtolower(preg_replace('/(?<!^)([A-Z])/', $separator . '$1', $string));
+        return strtolower(preg_replace('/(?<!^)([A-Z]|\d+)/', $separator . '$1', $string));
     }
 } 
