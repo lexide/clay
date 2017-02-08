@@ -60,10 +60,14 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @depends testSetData
+     * @depends      testSetData
      * @dataProvider toArrayData
+     * 
+     * @param $setData
+     * @param $expectedArray
+     * @param string $propertyCase
      */
-    public function testToArray($setData, $expectedArray)
+    public function testToArray($setData, $expectedArray, $propertyCase = "")
     {
         $modelTrait = new ModelTraitImplementation([]);
 
@@ -71,7 +75,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
             $modelTrait->{$setter}($value);
         }
 
-        $this->assertEquals($expectedArray, $modelTrait->toArray());
+        $this->assertArraySubset($expectedArray, $modelTrait->toArray($propertyCase));
 
     }
 
@@ -211,27 +215,27 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     "setProp2" => "value2",
                     "setProp3" => "value3"
                 ],
-                array_replace($this->defaultProperties, [
+                [
                     "prop1" => "value1",
                     "prop2" => "value2",
                     "prop3" => "value3"
-                ])
+                ]
             ],
             [ // #2 array attributes
                 [
                     "setArrayProp" => [1, 2, 3, 4, 5]
                 ],
-                array_replace($this->defaultProperties, [
+                [
                     "arrayProp" => [1, 2, 3, 4, 5]
-                ])
+                ]
             ],
             [  // #3 model attributes
                 [
                     "setObjectProp" => new ModelTraitImplementation($subModel1)
                 ],
-                array_replace($this->defaultProperties, [
+                [
                     "objectProp" => array_replace($this->defaultProperties, $subModel1)
-                ])
+                ]
             ],
             [  // #3 model collection attributes
                 [
@@ -240,9 +244,42 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                         new ModelTraitImplementation($subModel1)
                     ]
                 ],
-                array_replace($this->defaultProperties, [
+                [
                     "collectionProp" => [array_replace($this->defaultProperties, $subModel2), array_replace($this->defaultProperties, $subModel1)]
-                ])
+                ]
+            ],
+            [ // #4 Test setting underscore case output
+                [
+                    "setCamelCaseProp1" => "value1",
+                    "setCamelCaseProp2" => "value2"
+                ],
+                [
+                    "camel_case_prop_1" => "value1",
+                    "camel_case_prop_2" => "value2",
+                ],
+                "underscore"
+            ],
+            [ // #5 Test setting dash case output
+                [
+                    "setCamelCaseProp1" => "value1",
+                    "setCamelCaseProp2" => "value2"
+                ],
+                [
+                    "camel-case-prop-1" => "value1",
+                    "camel-case-prop-2" => "value2",
+                ],
+                "dash"
+            ],
+            [ // #6 Test setting non standard split case
+                [
+                    "setCamelCaseProp1" => "value1",
+                    "setCamelCaseProp2" => "value2"
+                ],
+                [
+                    "camel~case~prop~1" => "value1",
+                    "camel~case~prop~2" => "value2",
+                ],
+                "~"
             ]
         ];
     }
