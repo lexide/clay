@@ -40,14 +40,26 @@ trait DataTypeHandlingTrait
         throw new ModelException("Could not set a date. The value was invalid ($type)");
     }
 
-    protected function handleGetDate(\DateTime $date, $asString = true)
+    /**
+     * @param $date
+     * @param bool $asString
+     * @return \DateTime|null|string
+     */
+    protected function handleGetDate($date, $asString = true)
     {
-        if ($asString) {
-            return $date->format($this->dateFormat);
+        if (!$date instanceof \DateTime) {
+            return $asString? "": null;
         }
-        return $date;
+
+        return $asString? $date->format($this->dateFormat): $date;
     }
 
+    /**
+     * @param string $filePath
+     * @param bool $normalisePath
+     * @return string
+     * @throws ModelException
+     */
     protected function handleSetFile($filePath, $normalisePath = true)
     {
         if (!file_exists($filePath)) {
