@@ -1,6 +1,5 @@
 <?php
 namespace Downsider\Clay\Model;
-use Downsider\Clay\Exception\ModelException;
 
 /**
  * Used to load data into a model
@@ -24,10 +23,21 @@ trait ModelTrait
 {
     use ClassDiscriminatorTrait;
 
+    /**
+     * @var array
+     */
     protected $modelConstructorArgs = [];
 
+    /**
+     * @var bool
+     */
     protected $modelCanBeUpdated = true;
 
+    /**
+     * @param array $data
+     * @param bool $update
+     * @param bool $replaceCollections
+     */
     protected function loadData(array $data, $update = false, $replaceCollections = false)
     {
         foreach ($data as $prop => $value) {
@@ -85,6 +95,10 @@ trait ModelTrait
         }
     }
 
+    /**
+     * @param array $data
+     * @param bool $replaceCollections
+     */
     public function updateData(array $data, $replaceCollections = false)
     {
         // only update if we're allowed
@@ -93,6 +107,10 @@ trait ModelTrait
         }
     }
 
+    /**
+     * @param string $propertyCase
+     * @return array
+     */
     public function toArray($propertyCase = "")
     {
         $properties = get_object_vars($this);
@@ -110,8 +128,8 @@ trait ModelTrait
     }
 
     /**
-     * @param string $property
-     * @param string $case
+     * @param string string $property
+     * @param string string $case
      * @return string
      */
     private function convertPropertyCase($property, $case)
@@ -140,6 +158,10 @@ trait ModelTrait
         return $property;
     }
 
+    /**
+     * @param string $method
+     * @return \ReflectionParameter
+     */
     private function getFirstParameter($method)
     {
         $ref = new \ReflectionMethod($this, $method);
@@ -147,6 +169,12 @@ trait ModelTrait
         return $ref->getParameters()[0];
     }
 
+    /**
+     * @param \ReflectionParameter $param
+     * @param mixed $value
+     * @param bool $isCollection
+     * @return object
+     */
     private function constructClasses(\ReflectionParameter $param, $value, $isCollection = false)
     {
         $class = $param->getClass();
@@ -163,6 +191,11 @@ trait ModelTrait
         return $value;
     }
 
+    /**
+     * @param \ReflectionClass $class
+     * @param mixed $value
+     * @return object
+     */
     private function getNewInstance(\ReflectionClass $class, $value)
     {
         if (is_array($value)) {
@@ -172,6 +205,11 @@ trait ModelTrait
         return $value;
     }
 
+    /**
+     * @param mixed $value
+     * @param string $propertyCase
+     * @return mixed
+     */
     private function getValueData($value, $propertyCase)
     {
         $data = $value;

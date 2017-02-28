@@ -8,6 +8,12 @@ trait ClassDiscriminatorTrait
 {
     use NameConverterTrait;
 
+    /**
+     * @param \ReflectionClass $class
+     * @param array $data
+     * @return \ReflectionClass
+     * @throws ModelException
+     */
     private function discriminateClass(\ReflectionClass $class, array $data)
     {
         $properties = $class->getDefaultProperties();

@@ -10,6 +10,9 @@ use Downsider\Clay\Exception\ModelException;
 trait DataTypeHandlingTrait
 {
 
+    /**
+     * @var string
+     */
     protected $dateFormat = "Y-m-d";
 
     /**
@@ -41,7 +44,7 @@ trait DataTypeHandlingTrait
     }
 
     /**
-     * @param $date
+     * @param mixed $date
      * @param bool $asString
      * @return \DateTime|null|string
      */
