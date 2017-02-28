@@ -154,18 +154,23 @@ trait ModelTrait
 
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
-                    $class = $this->discriminateClass($class, $subValue);
-                    $value[$i] = $class->newInstanceArgs(array_merge([$subValue], $this->modelConstructorArgs));
+                    $value[$i] = $this->getNewInstance($class, $subValue);
                 }
             } else {
-                $class = $this->discriminateClass($class, $value);
-                $value = $class->newInstanceArgs(array_merge([$value], $this->modelConstructorArgs));
+                $value = $this->getNewInstance($class, $value);
             }
         }
         return $value;
     }
 
-    
+    private function getNewInstance(\ReflectionClass $class, $value)
+    {
+        if (is_array($value)) {
+            $class = $this->discriminateClass($class, $value);
+            $value = $class->newInstanceArgs(array_merge([$value], $this->modelConstructorArgs));
+        }
+        return $value;
+    }
 
     private function getValueData($value, $propertyCase)
     {
