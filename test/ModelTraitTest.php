@@ -67,7 +67,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
      * @param $expectedArray
      * @param string $propertyCase
      */
-    public function testToArray($setData, $expectedArray, $propertyCase = "")
+    public function testToArray($setData, $expectedArray)
     {
         $modelTrait = new ModelTraitImplementation([]);
 
@@ -75,7 +75,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
             $modelTrait->{$setter}($value);
         }
 
-        $this->assertArraySubset($expectedArray, $modelTrait->toArray($propertyCase));
+        $this->assertArraySubset($expectedArray, $modelTrait->toArray());
 
     }
 
@@ -247,39 +247,6 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                 [
                     "collectionProp" => [array_replace($this->defaultProperties, $subModel2), array_replace($this->defaultProperties, $subModel1)]
                 ]
-            ],
-            [ // #4 Test setting underscore case output
-                [
-                    "setCamelCaseProp1" => "value1",
-                    "setCamelCaseProp2" => "value2"
-                ],
-                [
-                    "camel_case_prop_1" => "value1",
-                    "camel_case_prop_2" => "value2",
-                ],
-                "underscore"
-            ],
-            [ // #5 Test setting dash case output
-                [
-                    "setCamelCaseProp1" => "value1",
-                    "setCamelCaseProp2" => "value2"
-                ],
-                [
-                    "camel-case-prop-1" => "value1",
-                    "camel-case-prop-2" => "value2",
-                ],
-                "dash"
-            ],
-            [ // #6 Test setting non standard split case
-                [
-                    "setCamelCaseProp1" => "value1",
-                    "setCamelCaseProp2" => "value2"
-                ],
-                [
-                    "camel~case~prop~1" => "value1",
-                    "camel~case~prop~2" => "value2",
-                ],
-                "~"
             ]
         ];
     }

@@ -108,10 +108,9 @@ trait ModelTrait
     }
 
     /**
-     * @param string $propertyCase
      * @return array
      */
-    public function toArray($propertyCase = "")
+    public function toArray()
     {
         $properties = get_object_vars($this);
         $data = [];
@@ -120,42 +119,10 @@ trait ModelTrait
             $getter = "get" . ucfirst($prop);
             if (method_exists($this, $getter)) {
                 $value = $this->{$getter}();
-                $prop = $this->convertPropertyCase($prop, $propertyCase);
-                $data[$prop] = $this->getValueData($value, $propertyCase);
+                $data[$prop] = $this->getValueData($value);
             }
         }
         return $data;
-    }
-
-    /**
-     * @param string string $property
-     * @param string string $case
-     * @return string
-     */
-    private function convertPropertyCase($property, $case)
-    {
-        switch ($case) {
-            case "studly caps":
-                $property = $this->toStudlyCaps($property);
-                break;
-            case "camel":
-                $property = lcfirst($this->toStudlyCaps($property));
-                break;
-            case "underscore":
-            case "snake":
-                $property = $this->toSplitCase($property);
-                break;
-            case "dash":
-            case "hyphen":
-                $property = $this->toSplitCase($property, "-");
-                break;
-            default:
-                if (strlen($case) == 1) {
-                    $property = $this->toSplitCase($property, $case);
-                }
-                break;
-        }
-        return $property;
     }
 
     /**
@@ -207,21 +174,20 @@ trait ModelTrait
 
     /**
      * @param mixed $value
-     * @param string $propertyCase
      * @return mixed
      */
-    private function getValueData($value, $propertyCase)
+    private function getValueData($value)
     {
         $data = $value;
         if (is_array($value)) {
             foreach ($value as $i => $subValue) {
                 if (is_object($subValue) && method_exists($subValue, "toArray")) {
-                    $subValue = $subValue->toArray($propertyCase);
+                    $subValue = $subValue->toArray();
                 }
                 $data[$i] = $subValue;
             }
         } elseif (is_object($value) && method_exists($value, "toArray")) {
-            $data = $value->toArray($propertyCase);
+            $data = $value->toArray();
         }
 
         return $data;
