@@ -1,9 +1,9 @@
 <?php
 
-namespace Downsider\Clay\Test;
+namespace Lexide\Clay\Test;
 
-use Downsider\Clay\Exception\ModelException;
-use Downsider\Clay\Test\Implementation\DataTypeHandlingTraitImplementation;
+use Lexide\Clay\Exception\ModelException;
+use Lexide\Clay\Test\Implementation\DataTypeHandlingTraitImplementation;
 
 /**
  *
@@ -76,4 +76,3 @@ class DataTypeHandlingTraitTest extends \PHPUnit_Framework_TestCase {
     }
 
 }
- 

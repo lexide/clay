@@ -1,9 +1,15 @@
 {
-  "name": "downsider/clay",
+  "name": "lexide/clay",
   "description": "Create lightweight models and apply complex data structures to them",
   "keywords": ["model", "models", "lightweight"],
   "license": "MIT",
-  "homepage": "https://github.com/downsider/clay",
+  "homepage": "https://github.com/lexide/clay",
+  "authors": [
+    {
+      "name": "Danny Smart",
+      "email": "downsider84@hotmail.com"
+    }
+  ],
   "require": {
     "php": ">=5.4.0"
   },
@@ -13,8 +19,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Downsider\\Clay\\": "src",
-      "Downsider\\Clay\\Test\\": "test"
+      "Lexide\\Clay\\": "src",
+      "Lexide\\Clay\\Test\\": "test"
     }
   }
 }

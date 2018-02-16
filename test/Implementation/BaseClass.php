@@ -1,7 +1,7 @@
 <?php
 
-namespace Downsider\Clay\Test\Implementation;
-use Downsider\Clay\Model\ModelTrait;
+namespace Lexide\Clay\Test\Implementation;
+use Lexide\Clay\Model\ModelTrait;
 
 /**
  * BaseClass
@@ -16,14 +16,14 @@ class BaseClass
 
     protected $modelDiscriminatorMap = [
         "discriminatorField" => "type",
-        "subclassNamespace" => "Downsider\\Clay\\Test\\Implementation\\SubClasses",
+        "subclassNamespace" => "Lexide\\Clay\\Test\\Implementation\\SubClasses",
         "subclassSuffix" => "Class",
         "map" => [
             "name" => true,
             "data" => true,
             "count" => true,
             "sizeOf" => "CountClass",
-            "weird" => "Downsider\\Clay\\Test\\Implementation\\SubClasses\\NonStandard"
+            "weird" => "Lexide\\Clay\\Test\\Implementation\\SubClasses\\NonStandard"
         ]
     ];
 

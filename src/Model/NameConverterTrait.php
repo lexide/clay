@@ -1,6 +1,6 @@
 <?php
 
-namespace Downsider\Clay\Model;
+namespace Lexide\Clay\Model;
 
 trait NameConverterTrait 
 {

@@ -9,7 +9,7 @@ automatically converting keys to camel case when applying data to the model.
 
 Install via composer
 
-    composer require downsider/clay
+    composer require lexide/clay
 
 ## Simple Example
 
@@ -17,7 +17,7 @@ To use Clay, a model should use the ModelTrait trait and implement a method whic
 
     class Model
     {
-        use Downsider\Clay\Model\ModelTrait;
+        use Lexide\Clay\Model\ModelTrait;
     
         public $property;
         ...
@@ -51,7 +51,7 @@ supplied argument in a setter
 
     class Address
     {
-        use Downsider\Clay\Model\ModelTrait;
+        use Lexide\Clay\Model\ModelTrait;
 
         public $street;
         public $city;
@@ -64,7 +64,7 @@ supplied argument in a setter
 
     class Customer
     {
-        use Downsider\Clay\Model\ModelTrait;
+        use Lexide\Clay\Model\ModelTrait;
     
         protected $address;
     
@@ -97,7 +97,7 @@ determine the class to instantiate
 
     class Customer
     {
-        use Downsider\Clay\Model\ModelTrait;
+        use Lexide\Clay\Model\ModelTrait;
     
         protected $addresses = [];
     

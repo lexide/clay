@@ -1,8 +1,8 @@
 <?php
 
-namespace Downsider\Clay\Model;
+namespace Lexide\Clay\Model;
 
-use Downsider\Clay\Exception\ModelException;
+use Lexide\Clay\Exception\ModelException;
 
 trait ClassDiscriminatorTrait
 {

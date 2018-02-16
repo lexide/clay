@@ -1,7 +1,7 @@
 <?php
 
-namespace Downsider\Clay\Test\Implementation\SubClasses;
-use Downsider\Clay\Test\Implementation\BaseClass;
+namespace Lexide\Clay\Test\Implementation\SubClasses;
+use Lexide\Clay\Test\Implementation\BaseClass;
 
 /**
  * NonStandard

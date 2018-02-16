@@ -1,5 +1,5 @@
 <?php
-namespace Downsider\Clay\Model;
+namespace Lexide\Clay\Model;
 
 /**
  * Used to load data into a model

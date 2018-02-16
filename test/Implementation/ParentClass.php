@@ -1,8 +1,8 @@
 <?php
 
-namespace Downsider\Clay\Test\Implementation;
+namespace Lexide\Clay\Test\Implementation;
 
-use Downsider\Clay\Model\ModelTrait;
+use Lexide\Clay\Model\ModelTrait;
 
 /**
  * ParentClass

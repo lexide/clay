@@ -1,10 +1,10 @@
 <?php
 
-namespace Downsider\Clay\Test;
+namespace Lexide\Clay\Test;
 
-use Downsider\Clay\Exception\ModelException;
-use Downsider\Clay\Test\Implementation\ModelTraitImplementation;
-use Downsider\Clay\Test\Implementation\ParentClass;
+use Lexide\Clay\Exception\ModelException;
+use Lexide\Clay\Test\Implementation\ModelTraitImplementation;
+use Lexide\Clay\Test\Implementation\ParentClass;
 
 /**
  *
@@ -294,4 +294,3 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
     }
 
 }
- 

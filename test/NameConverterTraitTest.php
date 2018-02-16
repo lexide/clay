@@ -1,8 +1,8 @@
 <?php
 
-namespace Downsider\Clay\Test;
-use Downsider\Clay\Model\StringCases;
-use Downsider\Clay\Test\Implementation\NameConverterImplementation;
+namespace Lexide\Clay\Test;
+use Lexide\Clay\Model\StringCases;
+use Lexide\Clay\Test\Implementation\NameConverterImplementation;
 
 /**
  * NameConverterTraitTest

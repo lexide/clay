@@ -1,6 +1,6 @@
 <?php
 
-namespace Downsider\Clay\Exception;
+namespace Lexide\Clay\Exception;
 
 /**
  *
