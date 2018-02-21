@@ -129,6 +129,10 @@ class NameConverterTraitTest extends \PHPUnit_Framework_TestCase
                 "WithSomeOtherCharacter",
                 "with~some~other~character",
                 "~"
+            ],
+            [ #9
+                "with_numbers_4nd_underscores",
+                "with_numbers_4nd_underscores"
             ]
         ];
     }

@@ -32,7 +32,7 @@ trait NameConverterTrait
     {
         return strtolower(
             preg_replace( // precede any capital letters or numbers with the separator (except when the character starts the string)
-                "/(?<!^)([A-Z]|\\d+)/",
+                "/(?<!^|_)([A-Z]|\\d+)/",
                 $separator . '$1',
                 preg_replace( // replace any non-word characters with the separator (e.g. for converting dash case to snake case)
                     "/[^A-Za-z0-9]/",
