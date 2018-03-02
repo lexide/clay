@@ -4,8 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "19a3624fabe3c3266e46b46bbdc2d65b",
-    "packages": [],
+    "content-hash": "1b306fa2ed3e44ad9b075fd60dc15f11",
+    "packages": [
+        {
+            "name": "lexide/k-switch",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lexide/k-switch.git",
+                "reference": "6d9cfc7fa5c54d0bdcc90695401e77d573085d7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lexide/k-switch/zipball/6d9cfc7fa5c54d0bdcc90695401e77d573085d7f",
+                "reference": "6d9cfc7fa5c54d0bdcc90695401e77d573085d7f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lexide\\KSwitch\\": "src",
+                    "Lexide\\KSwitch\\Test\\": "test"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danny Smart",
+                    "email": "downsider84@hotmail.com"
+                }
+            ],
+            "description": "A PHP library to switch cases of a property or element name",
+            "time": "2018-03-02T14:39:59+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
@@ -923,7 +961,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.34",
+            "version": "v2.8.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",

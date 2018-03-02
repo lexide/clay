@@ -3,6 +3,7 @@
 namespace Lexide\Clay\Model;
 
 use Lexide\Clay\Exception\ModelException;
+use Lexide\KSwitch\NameConverterTrait;
 
 trait ClassDiscriminatorTrait
 {
@@ -13,6 +14,7 @@ trait ClassDiscriminatorTrait
      * @param array $data
      * @return \ReflectionClass
      * @throws ModelException
+     * @throws \ReflectionException
      */
     private function discriminateClass(\ReflectionClass $class, array $data)
     {
