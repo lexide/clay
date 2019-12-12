@@ -3,11 +3,11 @@
 namespace Lexide\Clay\Model;
 
 use Lexide\Clay\Exception\ModelException;
-use Lexide\KSwitch\NameConverterTrait;
+use Lexide\KSwitch\NameConverterMultibyteTrait;
 
 trait ClassDiscriminatorTrait
 {
-    use NameConverterTrait;
+    use NameConverterMultibyteTrait;
 
     /**
      * @param \ReflectionClass $class

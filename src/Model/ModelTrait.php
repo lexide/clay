@@ -72,7 +72,7 @@ trait ModelTrait
                         $update &&
                         (
                             empty($replaceCollections) ||               // don't add if we're replacing all collections
-                            empty($replaceCollections[lcfirst($prop)])  // don't add if this collection has been marked for replacing
+                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been marked for replacing
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
@@ -86,7 +86,7 @@ trait ModelTrait
             } else {
                 // set the property directly
                 // to camel case
-                $prop = lcfirst($prop);
+                $prop = $this->mbLcfirst($prop);
                 if (property_exists($this, $prop)) {
                     $this->{$prop} = $value;
                 }
@@ -116,7 +116,7 @@ trait ModelTrait
         $data = [];
         foreach ($properties as $prop => $blah) {
             // check for getter
-            $getter = "get" . ucfirst($prop);
+            $getter = "get" . $this->mbUcfirst($prop);
             if (method_exists($this, $getter)) {
                 $value = $this->{$getter}();
                 $data[$prop] = $this->getValueData($value);
@@ -193,6 +193,38 @@ trait ModelTrait
         return $data;
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    private function mbUcfirst($string)
+    {
+        return $this->mbCaseConvertFirst($string, true);
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    private function mbLcfirst($string)
+    {
+        return $this->mbCaseConvertFirst($string, false);
+    }
+
+    /**
+     * @param string $string
+     * @param bool $upper
+     * @return string
+     */
+    private function mbCaseConvertFirst($string, $upper = true)
+    {
+        $case = $upper? "l": "u";
+        $pattern = "/^\p{L$case}/";
+
+        return preg_replace_callback($pattern, function ($matches) use ($upper) {
+            return $upper? mb_strtoupper($matches[0]): mb_strtolower($matches[0]);
+        }, $string);
+    }
 
 
 } 
