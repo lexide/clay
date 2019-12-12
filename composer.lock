@@ -11,12 +11,12 @@
             "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.ins.risk.regn.net/UKI/shared/php/packages/lexide/k-switch.git",
+                "url": "https://github.com/lexide/k-switch.git",
                 "reference": "2d0ffdc715836b67d529007ca7be6cb14ea9406c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.ins.risk.regn.net/api/v4/projects/UKI%2Fshared%2Fphp%2Fpackages%2Flexide%2Fk-switch/repository/archive.zip?sha=2d0ffdc715836b67d529007ca7be6cb14ea9406c",
+                "url": "https://api.github.com/repos/lexide/k-switch/zipball/2d0ffdc715836b67d529007ca7be6cb14ea9406c",
                 "reference": "2d0ffdc715836b67d529007ca7be6cb14ea9406c",
                 "shasum": ""
             },
@@ -33,7 +33,7 @@
                     "Lexide\\KSwitch\\": "src"
                 }
             },
-            "notification-url": "https://packagist.datahub.iil.co.uk/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
