@@ -12,6 +12,7 @@
   ],
   "require": {
     "php": ">=5.4.0",
+    "ext-mbstring": "*",
     "lexide/k-switch": "^1.0.0"
   },
   "require-dev": {
@@ -25,7 +26,11 @@
   },
   "autoload": {
     "psr-4": {
-      "Lexide\\Clay\\": "src",
+      "Lexide\\Clay\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Lexide\\Clay\\Test\\": "test"
     }
   }
