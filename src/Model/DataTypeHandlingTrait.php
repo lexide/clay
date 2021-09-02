@@ -18,9 +18,9 @@ trait DataTypeHandlingTrait
     /**
      * @param mixed $date
      * @return \DateTime
-     * @throws ModelException
+     * @throws ModelException|\Exception
      */
-    protected function handleSetDate($date)
+    protected function handleSetDate(mixed $date): \DateTime
     {
         // check case where $date is a timestamp inside a string
         if (is_string($date) && $date === (string) (int) $date) {
@@ -48,7 +48,7 @@ trait DataTypeHandlingTrait
      * @param bool $asString
      * @return \DateTime|null|string
      */
-    protected function handleGetDate($date, $asString = true)
+    protected function handleGetDate(mixed $date, bool $asString = true): \DateTime|string|null
     {
         if (!$date instanceof \DateTime) {
             return $asString? "": null;
@@ -63,7 +63,7 @@ trait DataTypeHandlingTrait
      * @return string
      * @throws ModelException
      */
-    protected function handleSetFile($filePath, $normalisePath = true)
+    protected function handleSetFile(string $filePath, bool $normalisePath = true): string
     {
         if (!file_exists($filePath)) {
             throw new ModelException("Could not set file. File does not exist ($filePath)");
