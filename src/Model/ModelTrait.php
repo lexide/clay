@@ -150,10 +150,11 @@ trait ModelTrait
      */
     private function constructClasses(\ReflectionParameter $param, mixed $value, bool $isCollection = false): mixed
     {
-        $class = $param->getType() && !$param->getType()->isBuiltin()
-            ? new \ReflectionClass($param->getType()->getName()) : null;
+        $classType = $param->getType();
+        $class = $classType && !$classType->isBuiltin() && is_a($classType, "ReflectionNamedType")
+            ? new \ReflectionClass($classType->getName()) : null;
 
-        if (!empty($class)) {
+        if (is_a($class, "ReflectionClass")) {
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
                     $value[$i] = $this->getNewInstance($class, $subValue);
