@@ -1,6 +1,8 @@
 <?php
 namespace Lexide\Clay\Model;
 
+use Lexide\Clay\Exception\ModelException;
+
 /**
  * Used to load data into a model
  *
@@ -37,8 +39,9 @@ trait ModelTrait
      * @param array $data
      * @param bool $update
      * @param bool $replaceCollections
+     * @throws \ReflectionException|ModelException
      */
-    protected function loadData(array $data, $update = false, $replaceCollections = false)
+    protected function loadData(array $data, bool $update = false, bool $replaceCollections = false)
     {
         foreach ($data as $prop => $value) {
 
@@ -60,13 +63,13 @@ trait ModelTrait
                     // if the setter's first parameter is an array, we need to check if this is a collection of objects
                     // in this case there should be an "addProperty" method on the class
                     $adder = "add$prop";
-                    if ($param->isArray() && method_exists($this, $adder)) {
+                    if ($param->getType() && $param->getType()->getName() === 'array' && method_exists($this, $adder)) {
                         $param = $this->getFirstParameter($adder);
                         $isCollection = true;
                     }
                     $value = $this->constructClasses($param, $value, $isCollection);
 
-                    // if we have a collection and we're updating it ...
+                    // if we have a collection, and we're updating it ...
                     if (
                         $isCollection &&
                         $update &&
@@ -98,8 +101,9 @@ trait ModelTrait
     /**
      * @param array $data
      * @param bool $replaceCollections
+     * @throws \ReflectionException|ModelException
      */
-    public function updateData(array $data, $replaceCollections = false)
+    public function updateData(array $data, bool $replaceCollections = false)
     {
         // only update if we're allowed
         if ($this->modelCanBeUpdated) {
@@ -110,7 +114,7 @@ trait ModelTrait
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $properties = get_object_vars($this);
         $data = [];
@@ -128,8 +132,9 @@ trait ModelTrait
     /**
      * @param string $method
      * @return \ReflectionParameter
+     * @throws \ReflectionException
      */
-    private function getFirstParameter($method)
+    private function getFirstParameter(string $method): \ReflectionParameter
     {
         $ref = new \ReflectionMethod($this, $method);
         /** @var \ReflectionParameter $param */
@@ -140,11 +145,15 @@ trait ModelTrait
      * @param \ReflectionParameter $param
      * @param mixed $value
      * @param bool $isCollection
-     * @return object
+     * @return mixed
+     * @throws ModelException
+     * @throws \ReflectionException
      */
-    private function constructClasses(\ReflectionParameter $param, $value, $isCollection = false)
+    private function constructClasses(\ReflectionParameter $param, mixed $value, bool $isCollection = false): mixed
     {
-        $class = $param->getClass();
+        $class = $param->getType() && !$param->getType()->isBuiltin()
+                 ? new \ReflectionClass($param->getType()->getName())   : null;
+
         if (!empty($class)) {
 
             if ($isCollection) {
@@ -161,9 +170,11 @@ trait ModelTrait
     /**
      * @param \ReflectionClass $class
      * @param mixed $value
-     * @return object
+     * @return mixed
+     * @throws ModelException
+     * @throws \ReflectionException
      */
-    private function getNewInstance(\ReflectionClass $class, $value)
+    private function getNewInstance(\ReflectionClass $class, mixed $value): mixed
     {
         if (is_array($value)) {
             $class = $this->discriminateClass($class, $value);
@@ -176,7 +187,7 @@ trait ModelTrait
      * @param mixed $value
      * @return mixed
      */
-    private function getValueData($value)
+    private function getValueData(mixed $value): mixed
     {
         $data = $value;
         if (is_array($value)) {
@@ -197,16 +208,16 @@ trait ModelTrait
      * @param string $string
      * @return string
      */
-    private function mbUcfirst($string)
+    private function mbUcfirst(string $string): string
     {
-        return $this->mbCaseConvertFirst($string, true);
+        return $this->mbCaseConvertFirst($string);
     }
 
     /**
      * @param string $string
      * @return string
      */
-    private function mbLcfirst($string)
+    private function mbLcfirst(string $string): string
     {
         return $this->mbCaseConvertFirst($string, false);
     }
@@ -216,7 +227,7 @@ trait ModelTrait
      * @param bool $upper
      * @return string
      */
-    private function mbCaseConvertFirst($string, $upper = true)
+    private function mbCaseConvertFirst(string $string, bool $upper = true): string
     {
         $case = $upper? "l": "u";
         $pattern = "/^\p{L$case}/";

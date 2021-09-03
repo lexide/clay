@@ -5,11 +5,11 @@ namespace Lexide\Clay\Test;
 use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Test\Implementation\ModelTraitImplementation;
 use Lexide\Clay\Test\Implementation\ParentClass;
+use PHPUnit\Framework\TestCase;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
-/**
- *
- */
-class ModelTraitTest extends \PHPUnit_Framework_TestCase {
+class ModelTraitTest extends TestCase {
+    use ArraySubsetAsserts;
 
     protected $defaultProperties =[
         "prop1" => null,
@@ -27,6 +27,8 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
      *
      * @param $testData
      * @param $expectedProperties
+     * @throws ModelException
+     * @throws \ReflectionException
      */
     public function testSetData($testData, $expectedProperties)
     {
@@ -49,23 +51,26 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                 if (!empty($value["objectData"][0])) {
                     foreach ($value["objectData"] as $i => $objData) {
                         foreach ($objData as $subProp => $subValue) {
-                            $this->assertAttributeEquals($subValue, $subProp, $actualData[$i]);
+                            $assertGetter = "get" . ucfirst($subProp);
+                            $this->assertSame($subValue, $actualData[$i]->{$assertGetter}($subProp));
                         }
                     }
                 }
                 continue;
             }
-            $this->assertAttributeEquals($value, $prop, $modelTrait);
+            $getter = "get" . $prop;
+            $this->assertSame($value, $modelTrait->{$getter}($prop));
         }
     }
 
     /**
      * @depends      testSetData
      * @dataProvider toArrayData
-     * 
+     *
      * @param $setData
      * @param $expectedArray
-     * @param string $propertyCase
+     * @throws ModelException
+     * @throws \ReflectionException
      */
     public function testToArray($setData, $expectedArray)
     {
@@ -75,6 +80,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
             $modelTrait->{$setter}($value);
         }
 
+        $traitArray = $modelTrait->toArray();
         $this->assertArraySubset($expectedArray, $modelTrait->toArray());
 
     }
@@ -115,11 +121,11 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
             $parent = new ParentClass($data);
             $this->fail("Should not be able to create discriminated subclasses");
         } catch (ModelException $e) {
-            $this->assertRegExp($exceptionMessagePattern, $e->getMessage());
+            $this->assertMatchesRegularExpression($exceptionMessagePattern, $e->getMessage());
         }
     }
 
-    public function setDataProvider()
+    public function setDataProvider(): array
     {
         $prop1Data = ["prop1" => "value1"];
         $prop2Data = ["prop2" => "value2"];
@@ -128,11 +134,11 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
         $allData = array_merge($prop1Data, $prop2Data, $prop3Data);
 
         return [
-            [ // #1 set multiple properties
+            [ // #0 set multiple properties
                 $allData,
                 $allData
             ],
-            [ // #2 convert property names to camel case
+            [ // #1 convert property names to camel case
                 [
                     "camel_case_prop1" => "value1",
                     "camel case prop2" => "value2",
@@ -142,15 +148,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     "camelCaseProp2" => "value2",
                 ]
             ],
-            [ // #3 set properties directly (no setter method)
-                [
-                    "noSetterProp" => "value1"
-                ],
-                [
-                    "noSetterProp" => "value1"
-                ]
-            ],
-            [ // #4 do not set properties that don't exist
+            [ // #2 do not set properties that don't exist
                 [
                     "noProp" => "does not exist"
                 ],
@@ -158,7 +156,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     "noProp" => "does not exist"
                 ]
             ],
-            [ // #5 create objects if they are type hinted
+            [ // #3 create objects if they are type hinted
                 [
                     "objectProp" => $prop1Data
                 ],
@@ -166,7 +164,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     "objectProp" => ["objectData" => $prop1Data]
                 ]
             ],
-            [ // #6 create a collection of objects if they are type hinted
+            [ // #4 create a collection of objects if they are type hinted
                 [
                     "collectionProp" => [
                         $prop1Data,
@@ -185,7 +183,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
                     ]
                 ]
             ],
-            [ // #7 pass standard array data directly to the setter, with no object creation
+            [ // #5 pass standard array data directly to the setter, with no object creation
                 [
                     "arrayProp" => $allData
                 ],
@@ -196,7 +194,11 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function toArrayData()
+    /**
+     * @throws ModelException
+     * @throws \ReflectionException
+     */
+    public function toArrayData(): array
     {
         $subModel1 = [
             "prop1" => "value1",
@@ -251,7 +253,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function discriminationProvider()
+    public function discriminationProvider(): array
     {
         return [
             [ #0 simple class loading with suffix
@@ -279,7 +281,7 @@ class ModelTraitTest extends \PHPUnit_Framework_TestCase {
         ];
     }
 
-    public function antiDiscriminationProvider()
+    public function antiDiscriminationProvider(): array
     {
         return [
             [ #0 missing discriminator field value

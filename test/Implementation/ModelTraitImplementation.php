@@ -2,6 +2,7 @@
 
 namespace Lexide\Clay\Test\Implementation;
 
+use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\ModelTrait;
 
 /**
@@ -29,6 +30,10 @@ class ModelTraitImplementation
 
     protected $collectionProp;
 
+    /**
+     * @throws \ReflectionException
+     * @throws ModelException
+     */
     public function __construct(array $data)
     {
         $this->loadData($data);
@@ -43,9 +48,9 @@ class ModelTraitImplementation
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getArrayProp()
+    public function getArrayProp(): mixed
     {
         return $this->arrayProp;
     }
@@ -53,7 +58,7 @@ class ModelTraitImplementation
     /**
      * @param mixed $camelCaseProp1
      */
-    public function setCamelCaseProp1($camelCaseProp1)
+    public function setCamelCaseProp1(mixed $camelCaseProp1)
     {
         $this->camelCaseProp1 = $camelCaseProp1;
     }
@@ -61,7 +66,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getCamelCaseProp1()
+    public function getCamelCaseProp1(): mixed
     {
         return $this->camelCaseProp1;
     }
@@ -70,7 +75,7 @@ class ModelTraitImplementation
     /**
      * @param mixed $camelCaseProp2
      */
-    public function setCamelCaseProp2($camelCaseProp2)
+    public function setCamelCaseProp2(mixed $camelCaseProp2)
     {
         $this->camelCaseProp2 = $camelCaseProp2;
     }
@@ -78,7 +83,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getCamelCaseProp2()
+    public function getCamelCaseProp2(): mixed
     {
         return $this->camelCaseProp2;
     }
@@ -101,7 +106,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getCollectionProp()
+    public function getCollectionProp(): mixed
     {
         return $this->collectionProp;
     }
@@ -117,7 +122,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getObjectProp()
+    public function getObjectProp(): mixed
     {
         return $this->objectProp;
     }
@@ -125,7 +130,7 @@ class ModelTraitImplementation
     /**
      * @param mixed $prop1
      */
-    public function setProp1($prop1)
+    public function setProp1(mixed $prop1)
     {
         $this->prop1 = $prop1;
     }
@@ -133,7 +138,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getProp1()
+    public function getProp1(): mixed
     {
         return $this->prop1;
     }
@@ -141,7 +146,7 @@ class ModelTraitImplementation
     /**
      * @param mixed $prop2
      */
-    public function setProp2($prop2)
+    public function setProp2(mixed $prop2)
     {
         $this->prop2 = $prop2;
     }
@@ -149,7 +154,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getProp2()
+    public function getProp2(): mixed
     {
         return $this->prop2;
     }
@@ -157,7 +162,7 @@ class ModelTraitImplementation
     /**
      * @param mixed $prop3
      */
-    public function setProp3($prop3)
+    public function setProp3(mixed $prop3)
     {
         $this->prop3 = $prop3;
     }
@@ -165,7 +170,7 @@ class ModelTraitImplementation
     /**
      * @return mixed
      */
-    public function getProp3()
+    public function getProp3(): mixed
     {
         return $this->prop3;
     }
