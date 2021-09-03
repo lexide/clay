@@ -151,10 +151,10 @@ trait ModelTrait
     private function constructClasses(\ReflectionParameter $param, mixed $value, bool $isCollection = false): mixed
     {
         $classType = $param->getType();
-        $class = $classType && is_a($classType, "ReflectionNamedType") && !$classType->isBuiltin()
+        $class = ($classType instanceof \ReflectionNamedType) && !$classType->isBuiltin()
             ? new \ReflectionClass($classType->getName()) : null;
 
-        if (is_a($class, "ReflectionClass")) {
+        if ($class instanceof \ReflectionClass) {
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
                     $value[$i] = $this->getNewInstance($class, $subValue);
