@@ -8,10 +8,11 @@ use Lexide\Clay\Test\Implementation\ParentClass;
 use PHPUnit\Framework\TestCase;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 
-class ModelTraitTest extends TestCase {
+class ModelTraitTest extends TestCase
+{
     use ArraySubsetAsserts;
 
-    protected $defaultProperties =[
+    protected $defaultProperties = [
         "prop1" => null,
         "prop2" => null,
         "prop3" => null,
@@ -27,8 +28,7 @@ class ModelTraitTest extends TestCase {
      *
      * @param $testData
      * @param $expectedProperties
-     * @throws ModelException
-     * @throws \ReflectionException
+     * @throws ModelException| \ReflectionException
      */
     public function testSetData($testData, $expectedProperties)
     {
@@ -70,7 +70,7 @@ class ModelTraitTest extends TestCase {
      * @param $setData
      * @param $expectedArray
      * @throws ModelException
-     * @throws \ReflectionException
+     * @throws \ReflectionException|\Exception
      */
     public function testToArray($setData, $expectedArray)
     {
@@ -80,9 +80,7 @@ class ModelTraitTest extends TestCase {
             $modelTrait->{$setter}($value);
         }
 
-        $traitArray = $modelTrait->toArray();
         $this->assertArraySubset($expectedArray, $modelTrait->toArray());
-
     }
 
     /**
@@ -102,7 +100,6 @@ class ModelTraitTest extends TestCase {
         $parent = $parent->toArray();
 
         $this->assertEquals($propertyData, $parent[$property]);
-
     }
 
     /**
@@ -247,7 +244,10 @@ class ModelTraitTest extends TestCase {
                     ]
                 ],
                 [
-                    "collectionProp" => [array_replace($this->defaultProperties, $subModel2), array_replace($this->defaultProperties, $subModel1)]
+                    "collectionProp" => [
+                        array_replace($this->defaultProperties, $subModel2),
+                        array_replace($this->defaultProperties, $subModel1)
+                    ]
                 ]
             ]
         ];
@@ -281,6 +281,9 @@ class ModelTraitTest extends TestCase {
         ];
     }
 
+    /**
+     * @return array
+     */
     public function antiDiscriminationProvider(): array
     {
         return [
@@ -291,6 +294,63 @@ class ModelTraitTest extends TestCase {
             [ #1 discriminator value not in map
                 ["type" => "unknownValue", "name" => "blah"],
                 "/'unknownValue'/"
+            ]
+        ];
+    }
+
+    /**
+     * @return array[]
+     * @throws ModelException
+     * @throws \ReflectionException
+     */
+    public function updateData(): array
+    {
+        $prop1Data = ["prop1" => "value1"];
+        $prop2Data = ["prop2" => "value2"];
+        $prop3Data = ["prop3" => "value3"];
+
+        $subModel1 = [
+            "prop1" => "value1",
+            "prop2" => "value2"
+        ];
+
+        $subModel2 = [
+            "prop3" => "value1",
+            "camelCaseProp1" => "value2",
+        ];
+        return [
+            [ // #0 create a collection of objects if they are type hinted
+                [
+                    "collectionProp" => [
+                        $prop1Data,
+                        $prop2Data,
+                        $prop3Data
+                    ]
+
+                ],
+                [
+                    "collectionProp" => [
+                        "objectData" => [
+                            $prop1Data,
+                            $prop2Data,
+                            $prop3Data
+                        ]
+                    ]
+                ]
+            ],
+            [
+                [
+                    "collectionProp" => [
+                        new ModelTraitImplementation($subModel2),
+                        new ModelTraitImplementation($subModel1)
+                    ]
+                ],
+                [
+                    "collectionProp" => [
+                        array_replace($this->defaultProperties, $subModel2),
+                        array_replace($this->defaultProperties, $subModel1)
+                    ]
+                ]
             ]
         ];
     }

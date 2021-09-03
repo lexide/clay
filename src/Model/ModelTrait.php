@@ -21,7 +21,7 @@ use Lexide\Clay\Exception\ModelException;
  * @property $modelDiscriminatorMap array
  *
  */
-trait ModelTrait 
+trait ModelTrait
 {
     use ClassDiscriminatorTrait;
 
@@ -71,11 +71,12 @@ trait ModelTrait
 
                     // if we have a collection, and we're updating it ...
                     if (
-                        $isCollection &&
-                        $update &&
-                        (
-                            empty($replaceCollections) ||               // don't add if we're replacing all collections
-                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been marked for replacing
+                        $isCollection
+                        && $update
+                        && (
+                            empty($replaceCollections)              // don't add if we're replacing all collections
+                            || empty($data[$this->mbLcfirst($prop)] // don't add if this collection has been marked for replacing
+                            )
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
@@ -94,7 +95,6 @@ trait ModelTrait
                     $this->{$prop} = $value;
                 }
             }
-
         }
     }
 
@@ -152,10 +152,9 @@ trait ModelTrait
     private function constructClasses(\ReflectionParameter $param, mixed $value, bool $isCollection = false): mixed
     {
         $class = $param->getType() && !$param->getType()->isBuiltin()
-                 ? new \ReflectionClass($param->getType()->getName())   : null;
+            ? new \ReflectionClass($param->getType()->getName()) : null;
 
         if (!empty($class)) {
-
             if ($isCollection) {
                 foreach ($value as $i => $subValue) {
                     $value[$i] = $this->getNewInstance($class, $subValue);
@@ -229,11 +228,11 @@ trait ModelTrait
      */
     private function mbCaseConvertFirst(string $string, bool $upper = true): string
     {
-        $case = $upper? "l": "u";
+        $case = $upper ? "l" : "u";
         $pattern = "/^\p{L$case}/";
 
         return preg_replace_callback($pattern, function ($matches) use ($upper) {
-            return $upper? mb_strtoupper($matches[0]): mb_strtolower($matches[0]);
+            return $upper ? mb_strtoupper($matches[0]) : mb_strtolower($matches[0]);
         }, $string);
     }
 
