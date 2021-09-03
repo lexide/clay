@@ -13,11 +13,12 @@ class DataTypeHandlingTraitImplementation
     use DataTypeHandlingTrait;
 
     /**
-     * @var \DateTime|array|string|null
+     * @var string|\DateTime|null
      */
     protected $date;
 
     /**
+     * @param mixed $date
      * @throws ModelException
      */
     public function setDate(mixed $date)
@@ -25,12 +26,18 @@ class DataTypeHandlingTraitImplementation
         $this->date = $this->handleSetDate($date);
     }
 
-    public function getDate(): \DateTime|array|string|null
+    /**
+     * @return string|\DateTime|null
+     */
+    public function getDate(): string|null|\DateTime
     {
         return $this->handleGetDate($this->date);
     }
 
-    public function setDateFormat($format)
+    /**
+     * @param string $format
+     */
+    public function setDateFormat(string $format)
     {
         $this->dateFormat = $format;
     }

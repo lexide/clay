@@ -8,13 +8,15 @@ use Lexide\Clay\Test\Implementation\BaseClass;
  */
 class CountClass extends BaseClass
 {
-
+    /**
+     * @var mixed
+     */
     protected $count;
 
     /**
      * @return mixed
      */
-    public function getCount()
+    public function getCount(): mixed
     {
         return $this->count;
     }
@@ -22,7 +24,7 @@ class CountClass extends BaseClass
     /**
      * @param mixed $count
      */
-    public function setCount($count)
+    public function setCount(mixed $count)
     {
         $this->count = $count;
     }

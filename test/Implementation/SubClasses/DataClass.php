@@ -8,13 +8,15 @@ use Lexide\Clay\Test\Implementation\BaseClass;
  */
 class DataClass extends BaseClass
 {
-
+    /**
+     * @var array
+     */
     protected $data = [];
 
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

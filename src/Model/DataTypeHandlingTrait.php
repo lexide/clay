@@ -51,10 +51,10 @@ trait DataTypeHandlingTrait
     protected function handleGetDate(mixed $date, bool $asString = true): \DateTime|string|null
     {
         if (!$date instanceof \DateTime) {
-            return $asString? "": null;
+            return $asString ? "" : null;
         }
 
-        return $asString? $date->format($this->dateFormat): $date;
+        return $asString ? $date->format($this->dateFormat) : $date;
     }
 
     /**

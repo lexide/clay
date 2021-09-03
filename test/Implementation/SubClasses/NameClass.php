@@ -8,13 +8,15 @@ use Lexide\Clay\Test\Implementation\BaseClass;
  */
 class NameClass extends BaseClass
 {
-
+    /**
+     * @var mixed
+     */
     protected $name;
 
     /**
      * @return mixed
      */
-    public function getName()
+    public function getName(): mixed
     {
         return $this->name;
     }
@@ -22,7 +24,7 @@ class NameClass extends BaseClass
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName(mixed $name)
     {
         $this->name = $name;
     }

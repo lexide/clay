@@ -8,13 +8,15 @@ use Lexide\Clay\Test\Implementation\BaseClass;
  */
 class NonStandard extends BaseClass
 {
-
+    /**
+     * @var mixed
+     */
     protected $unusual;
 
     /**
      * @return mixed
      */
-    public function getUnusual()
+    public function getUnusual(): mixed
     {
         return $this->unusual;
     }
@@ -22,7 +24,7 @@ class NonStandard extends BaseClass
     /**
      * @param mixed $unusual
      */
-    public function setUnusual($unusual)
+    public function setUnusual(mixed $unusual)
     {
         $this->unusual = $unusual;
     }
