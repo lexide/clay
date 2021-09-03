@@ -33,9 +33,9 @@ class ParentClass
     }
 
     /**
-     * @return mixed
+     * @return ?BaseClass
      */
-    public function getSingle(): mixed
+    public function getSingle(): ?BaseClass
     {
         return $this->single;
     }

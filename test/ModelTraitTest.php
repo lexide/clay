@@ -88,6 +88,8 @@ class ModelTraitTest extends TestCase
      *
      * @param $property
      * @param $propertyData
+     * @throws ModelException
+     * @throws \ReflectionException
      */
     public function testDiscrimination($property, $propertyData)
     {
@@ -107,6 +109,7 @@ class ModelTraitTest extends TestCase
      *
      * @param array $data
      * @param $exceptionMessagePattern
+     * @throws \ReflectionException
      */
     public function testAntiDiscrimination(array $data, $exceptionMessagePattern)
     {
