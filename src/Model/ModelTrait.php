@@ -151,7 +151,7 @@ trait ModelTrait
     private function constructClasses(\ReflectionParameter $param, mixed $value, bool $isCollection = false): mixed
     {
         $classType = $param->getType();
-        $class = $classType && !$classType->isBuiltin() && is_a($classType, "ReflectionNamedType")
+        $class = $classType && is_a($classType, "ReflectionNamedType") && !$classType->isBuiltin()
             ? new \ReflectionClass($classType->getName()) : null;
 
         if (is_a($class, "ReflectionClass")) {
