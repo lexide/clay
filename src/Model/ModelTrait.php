@@ -75,7 +75,7 @@ trait ModelTrait
                         $update &&
                         (
                             empty($replaceCollections) ||               // don't add if we're replacing all collections
-                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been)
+                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been marked for replacing
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
