@@ -38,10 +38,10 @@ trait ModelTrait
     /**
      * @param array $data
      * @param bool $update
-     * @param bool $replaceCollections
+     * @param array $replaceCollections
      * @throws \ReflectionException|ModelException
      */
-    protected function loadData(array $data, bool $update = false, bool $replaceCollections = false)
+    protected function loadData(array $data, bool $update = false, array $replaceCollections = [])
     {
         foreach ($data as $prop => $value) {
 
@@ -71,12 +71,11 @@ trait ModelTrait
 
                     // if we have a collection, and we're updating it ...
                     if (
-                        $isCollection
-                        && $update
-                        && (
-                            empty($replaceCollections)              // don't add if we're replacing all collections
-                            || empty($data[$this->mbLcfirst($prop)] // don't add if this collection has been marked for replacing
-                            )
+                        $isCollection &&
+                        $update &&
+                        (
+                            empty($replaceCollections) ||               // don't add if we're replacing all collections
+                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been)
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
@@ -100,10 +99,10 @@ trait ModelTrait
 
     /**
      * @param array $data
-     * @param bool $replaceCollections
+     * @param array $replaceCollections
      * @throws \ReflectionException|ModelException
      */
-    public function updateData(array $data, bool $replaceCollections = false)
+    public function updateData(array $data, array $replaceCollections = [])
     {
         // only update if we're allowed
         if ($this->modelCanBeUpdated) {
