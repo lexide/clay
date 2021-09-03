@@ -58,7 +58,7 @@ class ModelTraitTest extends TestCase
                 }
                 continue;
             }
-            $getter = "get" . $prop;
+            $getter = "get" . ucfirst($prop);
             $this->assertSame($value, $modelTrait->{$getter}($prop));
         }
     }
