@@ -148,7 +148,15 @@ class ModelTraitTest extends TestCase
                     "camelCaseProp2" => "value2",
                 ]
             ],
-            [ // #2 do not set properties that don't exist
+            [ // #2 set properties directly (no setter method)
+                [
+                    "noSetterProp" => "value1"
+                ],
+                [
+                    "noSetterProp" => "value1"
+                ]
+            ],
+            [ // #3 do not set properties that don't exist
                 [
                     "noProp" => "does not exist"
                 ],
@@ -156,7 +164,7 @@ class ModelTraitTest extends TestCase
                     "noProp" => "does not exist"
                 ]
             ],
-            [ // #3 create objects if they are type hinted
+            [ // #4 create objects if they are type hinted
                 [
                     "objectProp" => $prop1Data
                 ],
@@ -164,7 +172,7 @@ class ModelTraitTest extends TestCase
                     "objectProp" => ["objectData" => $prop1Data]
                 ]
             ],
-            [ // #4 create a collection of objects if they are type hinted
+            [ // #5 create a collection of objects if they are type hinted
                 [
                     "collectionProp" => [
                         $prop1Data,
@@ -183,7 +191,7 @@ class ModelTraitTest extends TestCase
                     ]
                 ]
             ],
-            [ // #5 pass standard array data directly to the setter, with no object creation
+            [ // #6 pass standard array data directly to the setter, with no object creation
                 [
                     "arrayProp" => $allData
                 ],

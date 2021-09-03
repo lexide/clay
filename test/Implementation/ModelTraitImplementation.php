@@ -67,6 +67,14 @@ class ModelTraitImplementation
     }
 
     /**
+     * @return ?string
+     */
+    public function getNoSetterProp(): ?string
+    {
+        return $this->noSetterProp;
+    }
+
+    /**
      * @param array $arrayProp
      */
     public function setArrayProp(array $arrayProp)
