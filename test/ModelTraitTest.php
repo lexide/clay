@@ -52,14 +52,14 @@ class ModelTraitTest extends TestCase
                     foreach ($value["objectData"] as $i => $objData) {
                         foreach ($objData as $subProp => $subValue) {
                             $assertGetter = "get" . ucfirst($subProp);
-                            $this->assertSame($subValue, $actualData[$i]->{$assertGetter}($subProp));
+                            $this->assertSame($subValue, $actualData[$i]->{$assertGetter}());
                         }
                     }
                 }
                 continue;
             }
             $getter = "get" . ucfirst($prop);
-            $this->assertSame($value, $modelTrait->{$getter}($prop));
+            $this->assertSame($value, $modelTrait->{$getter}());
         }
     }
 
