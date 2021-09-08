@@ -2,7 +2,6 @@
 namespace Lexide\Clay\Model;
 
 use Lexide\Clay\Exception\ModelException;
-use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Used to load data into a model

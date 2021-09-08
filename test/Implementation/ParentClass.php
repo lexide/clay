@@ -68,9 +68,9 @@ class ParentClass
     }
 
     /**
-     * @param BaseClass|array $single
+     * @param BaseClass $single
      */
-    public function addMultiple(BaseClass|array $single)
+    public function addMultiple(BaseClass $single)
     {
         $this->multiple[] = $single;
     }
