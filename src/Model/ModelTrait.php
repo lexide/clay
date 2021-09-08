@@ -66,7 +66,8 @@ trait ModelTrait
                     $adder = "add$prop";
 
                     $paramType = $param->getType();
-                    if ($paramType instanceof \ReflectionNamedType &&
+                    if (
+                        $paramType instanceof \ReflectionNamedType &&
                         $paramType->getName() === 'array' &&
                         method_exists($this, $adder)
                     ) {

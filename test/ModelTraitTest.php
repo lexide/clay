@@ -55,12 +55,7 @@ class ModelTraitTest extends TestCase
                     foreach ($value["objectData"] as $i => $objData) {
                         foreach ($objData as $subProp => $subValue) {
                             $assertGetter = "get" . ucfirst($subProp);
-
-                            if (is_array($actualData[$i])) {
-                                $this->assertSame($subValue, $actualData[$i][$subProp]);
-                            } else {
-                                $this->assertSame($subValue, $actualData[$i]->{$assertGetter}());
-                            }
+                            $this->assertSame($subValue, $actualData[$i]->{$assertGetter}());
                         }
                     }
                 }
