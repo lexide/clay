@@ -18,7 +18,8 @@ trait DataTypeHandlingTrait
     /**
      * @param mixed $date
      * @return \DateTime
-     * @throws ModelException|\Exception
+     * @throws ModelException
+     * @throws \Exception
      */
     protected function handleSetDate(mixed $date): \DateTime
     {

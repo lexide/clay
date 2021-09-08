@@ -103,7 +103,8 @@ trait ModelTrait
     /**
      * @param array $data
      * @param array $replaceCollections
-     * @throws \ReflectionException|ModelException
+     * @throws \ReflectionException
+     * @throws ModelException
      */
     public function updateData(array $data, array $replaceCollections = [])
     {
