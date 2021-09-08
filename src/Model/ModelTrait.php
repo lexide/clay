@@ -2,6 +2,7 @@
 namespace Lexide\Clay\Model;
 
 use Lexide\Clay\Exception\ModelException;
+use phpDocumentor\Reflection\Types\Array_;
 
 /**
  * Used to load data into a model
@@ -39,7 +40,8 @@ trait ModelTrait
      * @param array $data
      * @param bool $update
      * @param array $replaceCollections
-     * @throws \ReflectionException|ModelException
+     * @throws \ReflectionException
+     * @throws ModelException
      */
     protected function loadData(array $data, bool $update = false, array $replaceCollections = [])
     {
@@ -63,7 +65,8 @@ trait ModelTrait
                     // if the setter's first parameter is an array, we need to check if this is a collection of objects
                     // in this case there should be an "addProperty" method on the class
                     $adder = "add$prop";
-                    if ($param->getType() && $param->getType()->getName() === 'array' && method_exists($this, $adder)) {
+
+                    if ($param->getType() instanceof Array_ && method_exists($this, $adder)) {
                         $param = $this->getFirstParameter($adder);
                         $isCollection = true;
                     }

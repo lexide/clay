@@ -134,9 +134,9 @@ class ModelTraitImplementation
     }
 
     /**
-     * @param ModelTraitImplementation $collectionProp
+     * @param ModelTraitImplementation|array $collectionProp
      */
-    public function addCollectionProp(ModelTraitImplementation $collectionProp)
+    public function addCollectionProp(ModelTraitImplementation|array $collectionProp)
     {
         $this->collectionProp[] = $collectionProp;
     }

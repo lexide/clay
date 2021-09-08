@@ -28,7 +28,8 @@ class ModelTraitTest extends TestCase
      *
      * @param $testData
      * @param $expectedProperties
-     * @throws ModelException| \ReflectionException
+     * @throws ModelException
+     * @throws \ReflectionException
      */
     public function testSetData($testData, $expectedProperties)
     {
@@ -40,8 +41,10 @@ class ModelTraitTest extends TestCase
                 $this->assertObjectNotHasAttribute($prop, $modelTrait);
                 continue;
             }
+
+            $getter = "get" . ucfirst($prop);
+
             if (!empty($value["objectData"])) {
-                $getter = "get" . ucfirst($prop);
                 $actualData = $modelTrait->{$getter}();
                 if (!is_array($actualData)) {
                     // wrap data and values in an array so we can process them in the same way
@@ -52,13 +55,17 @@ class ModelTraitTest extends TestCase
                     foreach ($value["objectData"] as $i => $objData) {
                         foreach ($objData as $subProp => $subValue) {
                             $assertGetter = "get" . ucfirst($subProp);
-                            $this->assertSame($subValue, $actualData[$i]->{$assertGetter}());
+
+                            if (is_array($actualData[$i])) {
+                                $this->assertSame($subValue, $actualData[$i][$subProp]);
+                            } else {
+                                $this->assertSame($subValue, $actualData[$i]->{$assertGetter}());
+                            }
                         }
                     }
                 }
                 continue;
             }
-            $getter = "get" . ucfirst($prop);
             $this->assertSame($value, $modelTrait->{$getter}());
         }
     }
@@ -70,7 +77,8 @@ class ModelTraitTest extends TestCase
      * @param $setData
      * @param $expectedArray
      * @throws ModelException
-     * @throws \ReflectionException|\Exception
+     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function testToArray($setData, $expectedArray)
     {
