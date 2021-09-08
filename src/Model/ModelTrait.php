@@ -65,7 +65,11 @@ trait ModelTrait
                     // in this case there should be an "addProperty" method on the class
                     $adder = "add$prop";
 
-                    if ($param->getType() instanceof \ReflectionNamedType && method_exists($this, $adder)) {
+                    $paramType = $param->getType();
+                    if ($paramType instanceof \ReflectionNamedType &&
+                        $paramType->getName() === 'array' &&
+                        method_exists($this, $adder)
+                    ) {
                         $param = $this->getFirstParameter($adder);
                         $isCollection = true;
                     }
