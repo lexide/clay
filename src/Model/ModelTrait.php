@@ -160,7 +160,8 @@ trait ModelTrait
     {
         $classType = $param->getType();
         $class = ($classType instanceof \ReflectionNamedType) && !$classType->isBuiltin()
-            ? new \ReflectionClass($classType->getName()) : null;
+            ? new \ReflectionClass($classType->getName())
+            : null;
 
         if ($class instanceof \ReflectionClass) {
             if ($isCollection) {
