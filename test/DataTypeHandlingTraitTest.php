@@ -4,42 +4,44 @@ namespace Lexide\Clay\Test;
 
 use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Test\Implementation\DataTypeHandlingTraitImplementation;
+use PHPUnit\Framework\TestCase;
 
-/**
- *
- */
-class DataTypeHandlingTraitTest extends \PHPUnit_Framework_TestCase {
+class DataTypeHandlingTraitTest extends TestCase
+{
 
     /**
      * @dataProvider handleDateProvider
      *
-     * @param $data
-     * @param $date
-     * @param bool $catchException
+     * @param mixed $data
+     * @param string $date
      * @throws ModelException
      */
-    public function testHandleDate($data, $date, $catchException = false)
+    public function testHandleDate(mixed $data, string $date)
     {
         $dataTypeTrait = new DataTypeHandlingTraitImplementation();
+        $dataTypeTrait->setDate($data);
 
-        try {
-            $dataTypeTrait->setDate($data);
-            if ($catchException) {
-                $this->fail("Should not be able to set a date with the value '$date'");
-            }
-        } catch (ModelException $e) {
-            if (!$catchException) {
-                throw $e;
-            }
-        }
-
-        if (!$catchException) {
-            $this->assertAttributeInstanceOf("\\DateTime", "date", $dataTypeTrait);
-            $this->assertEquals($date, $dataTypeTrait->getDate());
-        }
-
+        $this->assertEquals($date, $dataTypeTrait->getDate());
     }
 
+    /**
+     * @dataProvider handleDateExceptionProvider
+     *
+     * @param mixed $data
+     * @throws ModelException
+     */
+    public function testHandleDateExceptions(mixed $data)
+    {
+        $this->expectException(ModelException::class);
+
+        $dataTypeTrait = new DataTypeHandlingTraitImplementation();
+
+        $dataTypeTrait->setDate($data);
+    }
+
+    /**
+     * @throws ModelException
+     */
     public function testChangeDateFormat()
     {
         $dataTypeTrait = new DataTypeHandlingTraitImplementation();
@@ -52,7 +54,7 @@ class DataTypeHandlingTraitTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("26-01-2015", $dataTypeTrait->getDate());
     }
 
-    public function handleDateProvider()
+    public function handleDateProvider(): array
     {
         return [
             [ #0 with a string
@@ -66,13 +68,19 @@ class DataTypeHandlingTraitTest extends \PHPUnit_Framework_TestCase {
             [ #2 with a timestamp
                 strtotime("2015-01-26"),
                 "2015-01-26"
-            ],
-            [ #3 with an invalid value (throws exception)
-                ["blah"],
-                null,
-                true
             ]
         ];
     }
 
+    public function handleDateExceptionProvider(): array
+    {
+        return [
+            [ #0 with an invalid value - array
+                ["blah"]
+            ],
+            [ #1 with an invalid value - null
+                null
+            ]
+        ];
+    }
 }

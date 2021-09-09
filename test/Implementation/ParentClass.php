@@ -2,6 +2,7 @@
 
 namespace Lexide\Clay\Test\Implementation;
 
+use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\ModelTrait;
 
 /**
@@ -21,15 +22,20 @@ class ParentClass
      */
     protected $multiple = [];
 
+    /**
+     * @param array $data
+     * @throws ModelException
+     * @throws \ReflectionException
+     */
     public function __construct(array $data = [])
     {
         $this->loadData($data);
     }
 
     /**
-     * @return BaseClass
+     * @return ?BaseClass
      */
-    public function getSingle()
+    public function getSingle(): ?BaseClass
     {
         return $this->single;
     }
@@ -45,7 +51,7 @@ class ParentClass
     /**
      * @return array
      */
-    public function getMultiple()
+    public function getMultiple(): array
     {
         return $this->multiple;
     }
@@ -61,6 +67,9 @@ class ParentClass
         }
     }
 
+    /**
+     * @param BaseClass $single
+     */
     public function addMultiple(BaseClass $single)
     {
         $this->multiple[] = $single;

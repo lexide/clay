@@ -16,7 +16,7 @@ trait ClassDiscriminatorTrait
      * @throws ModelException
      * @throws \ReflectionException
      */
-    private function discriminateClass(\ReflectionClass $class, array $data)
+    private function discriminateClass(\ReflectionClass $class, array $data): \ReflectionClass
     {
         $properties = $class->getDefaultProperties();
         if (!empty($properties["modelDiscriminatorMap"])) {

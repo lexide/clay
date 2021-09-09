@@ -1,6 +1,7 @@
 <?php
 
 namespace Lexide\Clay\Test\Implementation;
+use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\ModelTrait;
 
 /**
@@ -10,10 +11,19 @@ class BaseClass
 {
     use ModelTrait;
 
+    /**
+     * @var mixed
+     */
     protected $id;
 
+    /**
+     * @var mixed
+     */
     protected $type;
 
+    /**
+     * @var array
+     */
     protected $modelDiscriminatorMap = [
         "discriminatorField" => "type",
         "subclassNamespace" => "Lexide\\Clay\\Test\\Implementation\\SubClasses",
@@ -27,6 +37,11 @@ class BaseClass
         ]
     ];
 
+    /**
+     * @param array $data
+     * @throws ModelException
+     * @throws \ReflectionException
+     */
     public function __construct(array $data = [])
     {
         $this->loadData($data);
@@ -35,7 +50,7 @@ class BaseClass
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -43,7 +58,7 @@ class BaseClass
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId(mixed $id)
     {
         $this->id = $id;
     }
@@ -51,7 +66,7 @@ class BaseClass
     /**
      * @return mixed
      */
-    public function getType()
+    public function getType(): mixed
     {
         return $this->type;
     }
@@ -59,7 +74,7 @@ class BaseClass
     /**
      * @param mixed $type
      */
-    public function setType($type)
+    public function setType(mixed $type)
     {
         $this->type = $type;
     }

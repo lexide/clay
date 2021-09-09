@@ -2,6 +2,7 @@
 
 namespace Lexide\Clay\Test\Implementation;
 
+use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\DataTypeHandlingTrait;
 
 /**
@@ -11,19 +12,32 @@ class DataTypeHandlingTraitImplementation
 {
     use DataTypeHandlingTrait;
 
+    /**
+     * @var string|\DateTime|null
+     */
     protected $date;
 
-    public function setDate($date)
+    /**
+     * @param mixed $date
+     * @throws ModelException
+     */
+    public function setDate(mixed $date)
     {
         $this->date = $this->handleSetDate($date);
     }
 
-    public function getDate()
+    /**
+     * @return string|\DateTime|null
+     */
+    public function getDate(): string|null|\DateTime
     {
         return $this->handleGetDate($this->date);
     }
 
-    public function setDateFormat($format)
+    /**
+     * @param string $format
+     */
+    public function setDateFormat(string $format)
     {
         $this->dateFormat = $format;
     }
