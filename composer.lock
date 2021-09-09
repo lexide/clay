@@ -11,8 +11,14 @@
             "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.ins.risk.regn.net/UKI/shared/php/packages/lexide/k-switch.git",
+                "url": "https://github.com/lexide/k-switch.git",
                 "reference": "30a71c0151934ea510e7383a4c943b1338dfdacc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lexide/k-switch/zipball/30a71c0151934ea510e7383a4c943b1338dfdacc",
+                "reference": "30a71c0151934ea510e7383a4c943b1338dfdacc",
+                "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
@@ -27,7 +33,7 @@
                     "Lexide\\KSwitch\\": "src"
                 }
             },
-            "notification-url": "https://packagist.datahub.iil.co.uk/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -38,6 +44,10 @@
                 }
             ],
             "description": "A PHP library to switch cases of a property or element name",
+            "support": {
+                "issues": "https://github.com/lexide/k-switch/issues",
+                "source": "https://github.com/lexide/k-switch/tree/2.0.0"
+            },
             "time": "2021-02-09T15:10:27+00:00"
         }
     ],
