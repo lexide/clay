@@ -24,7 +24,7 @@ class DataClass extends BaseClass
     /**
      * @param array $data
      */
-    public function setData(array $data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }

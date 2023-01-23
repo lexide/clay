@@ -24,7 +24,7 @@ class CountClass extends BaseClass
     /**
      * @param mixed $count
      */
-    public function setCount(mixed $count)
+    public function setCount(mixed $count): void
     {
         $this->count = $count;
     }

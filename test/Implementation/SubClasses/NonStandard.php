@@ -24,7 +24,7 @@ class NonStandard extends BaseClass
     /**
      * @param mixed $unusual
      */
-    public function setUnusual(mixed $unusual)
+    public function setUnusual(mixed $unusual): void
     {
         $this->unusual = $unusual;
     }

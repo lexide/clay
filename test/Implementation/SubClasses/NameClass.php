@@ -24,7 +24,7 @@ class NameClass extends BaseClass
     /**
      * @param mixed $name
      */
-    public function setName(mixed $name)
+    public function setName(mixed $name): void
     {
         $this->name = $name;
     }

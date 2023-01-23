@@ -77,7 +77,7 @@ class ModelTraitImplementation
     /**
      * @param array $arrayProp
      */
-    public function setArrayProp(array $arrayProp)
+    public function setArrayProp(array $arrayProp): void
     {
         $this->arrayProp = $arrayProp;
     }
@@ -93,7 +93,7 @@ class ModelTraitImplementation
     /**
      * @param string $camelCaseProp1
      */
-    public function setCamelCaseProp1(string $camelCaseProp1)
+    public function setCamelCaseProp1(string $camelCaseProp1): void
     {
         $this->camelCaseProp1 = $camelCaseProp1;
     }
@@ -110,7 +110,7 @@ class ModelTraitImplementation
     /**
      * @param string $camelCaseProp2
      */
-    public function setCamelCaseProp2(string $camelCaseProp2)
+    public function setCamelCaseProp2(string $camelCaseProp2): void
     {
         $this->camelCaseProp2 = $camelCaseProp2;
     }
@@ -125,7 +125,7 @@ class ModelTraitImplementation
     /**
      * @param array $collectionProp
      */
-    public function setCollectionProp(array $collectionProp)
+    public function setCollectionProp(array $collectionProp): void
     {
         $this->collectionProp = [];
         foreach ($collectionProp as $prop) {
@@ -136,7 +136,7 @@ class ModelTraitImplementation
     /**
      * @param ModelTraitImplementation $collectionProp
      */
-    public function addCollectionProp(ModelTraitImplementation $collectionProp)
+    public function addCollectionProp(ModelTraitImplementation $collectionProp): void
     {
         $this->collectionProp[] = $collectionProp;
     }
@@ -152,7 +152,7 @@ class ModelTraitImplementation
     /**
      * @param ModelTraitImplementation $objectProp
      */
-    public function setObjectProp(ModelTraitImplementation $objectProp)
+    public function setObjectProp(ModelTraitImplementation $objectProp): void
     {
         $this->objectProp = $objectProp;
     }
@@ -168,7 +168,7 @@ class ModelTraitImplementation
     /**
      * @param string $prop1
      */
-    public function setProp1(string $prop1)
+    public function setProp1(string $prop1): void
     {
         $this->prop1 = $prop1;
     }
@@ -184,7 +184,7 @@ class ModelTraitImplementation
     /**
      * @param string $prop2
      */
-    public function setProp2(string $prop2)
+    public function setProp2(string $prop2): void
     {
         $this->prop2 = $prop2;
     }
@@ -200,7 +200,7 @@ class ModelTraitImplementation
     /**
      * @param string $prop3
      */
-    public function setProp3(string $prop3)
+    public function setProp3(string $prop3): void
     {
         $this->prop3 = $prop3;
     }

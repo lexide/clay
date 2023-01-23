@@ -21,7 +21,7 @@ class DataTypeHandlingTraitImplementation
      * @param mixed $date
      * @throws ModelException
      */
-    public function setDate(mixed $date)
+    public function setDate(mixed $date): void
     {
         $this->date = $this->handleSetDate($date);
     }
@@ -37,7 +37,7 @@ class DataTypeHandlingTraitImplementation
     /**
      * @param string $format
      */
-    public function setDateFormat(string $format)
+    public function setDateFormat(string $format): void
     {
         $this->dateFormat = $format;
     }

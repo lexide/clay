@@ -58,7 +58,7 @@ class BaseClass
     /**
      * @param mixed $id
      */
-    public function setId(mixed $id)
+    public function setId(mixed $id): void
     {
         $this->id = $id;
     }
@@ -74,7 +74,7 @@ class BaseClass
     /**
      * @param mixed $type
      */
-    public function setType(mixed $type)
+    public function setType(mixed $type): void
     {
         $this->type = $type;
     }
