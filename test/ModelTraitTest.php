@@ -66,14 +66,13 @@ class ModelTraitTest extends TestCase
     }
 
     /**
-     * @depends      testSetData
      * @dataProvider toArrayData
      *
      * @param $setData
      * @param $expectedArray
+     * @param bool $excludeNulls
      * @throws ModelException
      * @throws \ReflectionException
-     * @throws \Exception
      */
     public function testToArray($setData, $expectedArray)
     {
@@ -84,6 +83,20 @@ class ModelTraitTest extends TestCase
         }
 
         $this->assertArraySubset($expectedArray, $modelTrait->toArray());
+    }
+
+    public function testToArrayExcludingNulls()
+    {
+        $modelTrait = new ModelTraitImplementation([]);
+        $modelTrait->setProp2("foo");
+        $modelTrait->setProp3("bar");
+
+        $expected = [
+            "prop2" => "foo",
+            "prop3" => "bar"
+        ];
+
+        $this->assertSame($expected, $modelTrait->toArray(true));
     }
 
     /**
@@ -169,11 +182,11 @@ class ModelTraitTest extends TestCase
         $allData = array_merge($prop1Data, $prop2Data, $prop3Data);
 
         return [
-            [ // #0 set multiple properties
+            "multiple properties" => [
                 $allData,
                 $allData
             ],
-            [ // #1 convert property names to camel case
+            "convert to camelCase" => [
                 [
                     "camel_case_prop1" => "value1",
                     "camel case prop2" => "value2",
@@ -183,7 +196,7 @@ class ModelTraitTest extends TestCase
                     "camelCaseProp2" => "value2",
                 ]
             ],
-            [ // #2 set properties directly (no setter method)
+            "no setters" => [
                 [
                     "noSetterProp" => "value1"
                 ],
@@ -191,7 +204,7 @@ class ModelTraitTest extends TestCase
                     "noSetterProp" => "value1"
                 ]
             ],
-            [ // #3 do not set properties that don't exist
+            "non-existent properties" => [
                 [
                     "noProp" => "does not exist"
                 ],
@@ -199,7 +212,7 @@ class ModelTraitTest extends TestCase
                     "noProp" => "does not exist"
                 ]
             ],
-            [ // #4 create objects if they are type hinted
+            "create type hinted objects" => [
                 [
                     "objectProp" => $prop1Data
                 ],
@@ -207,7 +220,7 @@ class ModelTraitTest extends TestCase
                     "objectProp" => ["objectData" => $prop1Data]
                 ]
             ],
-            [ // #5 create a collection of objects if they are type hinted
+            "create type hinted collections" => [
                 [
                     "collectionProp" => [
                         $prop1Data,
@@ -226,7 +239,7 @@ class ModelTraitTest extends TestCase
                     ]
                 ]
             ],
-            [ // #6 pass standard array data directly to the setter, with no object creation
+            "handle standard arrays" => [
                 [
                     "arrayProp" => $allData
                 ],
@@ -254,7 +267,7 @@ class ModelTraitTest extends TestCase
         ];
 
         return [
-            [ // #1 multiple attributes
+            "multiple attributes" => [
                 [
                     "setProp1" => "value1",
                     "setProp2" => "value2",
@@ -264,9 +277,10 @@ class ModelTraitTest extends TestCase
                     "prop1" => "value1",
                     "prop2" => "value2",
                     "prop3" => "value3"
-                ]
+                ],
+                false
             ],
-            [ // #2 array attributes
+            "array attributes" => [
                 [
                     "setArrayProp" => [1, 2, 3, 4, 5]
                 ],
@@ -274,7 +288,7 @@ class ModelTraitTest extends TestCase
                     "arrayProp" => [1, 2, 3, 4, 5]
                 ]
             ],
-            [  // #3 model attributes
+            "model attributes" => [
                 [
                     "setObjectProp" => new ModelTraitImplementation($subModel1)
                 ],
@@ -282,7 +296,7 @@ class ModelTraitTest extends TestCase
                     "objectProp" => array_replace($this->defaultProperties, $subModel1)
                 ]
             ],
-            [  // #3 model collection attributes
+            "model collection attributes" => [
                 [
                     "setCollectionProp" => [
                         new ModelTraitImplementation($subModel2),
@@ -302,19 +316,19 @@ class ModelTraitTest extends TestCase
     public function discriminationProvider(): array
     {
         return [
-            [ #0 simple class loading with suffix
+            "simple class loading with suffix" => [
                 "single",
                 ["type" => "name", "id" => 1, "name" => "test"]
             ],
-            [ #1 mapped class loading with suffix
+            "mapped class loading with suffix" => [
                 "single",
                 ["type" => "sizeOf", "id" => 1, "count" => 3]
             ],
-            [ #2 mapped class loading with FQCN
+            "mapped class loading with FQCN" => [
                 "single",
                 ["type" => "weird", "id" => 1, "unusual" => "blubbery"]
             ],
-            [ #3 multiple class loading of various types
+            "mixed loading" => [
                 "multiple",
                 [
                     ["type" => "name", "id" => 1, "name" => "test1"],
@@ -333,11 +347,11 @@ class ModelTraitTest extends TestCase
     public function antiDiscriminationProvider(): array
     {
         return [
-            [ #0 missing discriminator field value
+            "missing discriminator field" => [
                 ["name" => "blah"],
                 "/'type'/"
             ],
-            [ #1 discriminator value not in map
+            "discriminator value not in map" => [
                 ["type" => "unknownValue", "name" => "blah"],
                 "/'unknownValue'/"
             ]

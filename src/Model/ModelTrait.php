@@ -138,9 +138,10 @@ trait ModelTrait
     }
 
     /**
+     * @param bool $excludeNulls
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $excludeNulls = false): array
     {
         $properties = get_object_vars($this);
         $data = [];
@@ -149,8 +150,12 @@ trait ModelTrait
             $getter = "get" . $this->mbUcfirst($prop);
             if (method_exists($this, $getter)) {
                 $value = $this->{$getter}();
-                $data[$prop] = $this->getValueData($value);
+                $data[$prop] = $this->getValueData($value, $excludeNulls);
             }
+        }
+
+        if ($excludeNulls) {
+            $data = array_filter($data, fn($value) => !is_null($value));
         }
         return $data;
     }
@@ -212,20 +217,21 @@ trait ModelTrait
 
     /**
      * @param mixed $value
+     * @param bool $excludeNulls
      * @return mixed
      */
-    private function getValueData(mixed $value): mixed
+    private function getValueData(mixed $value, bool $excludeNulls = false): mixed
     {
         $data = $value;
         if (is_array($value)) {
             foreach ($value as $i => $subValue) {
                 if (is_object($subValue) && method_exists($subValue, "toArray")) {
-                    $subValue = $subValue->toArray();
+                    $subValue = $subValue->toArray($excludeNulls);
                 }
                 $data[$i] = $subValue;
             }
         } elseif (is_object($value) && method_exists($value, "toArray")) {
-            $data = $value->toArray();
+            $data = $value->toArray($excludeNulls);
         }
 
         return $data;
