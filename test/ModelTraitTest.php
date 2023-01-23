@@ -128,6 +128,38 @@ class ModelTraitTest extends TestCase
         }
     }
 
+    public function testUpdatingChildren()
+    {
+        $id = "foo";
+        $name = "bar";
+        $description1 = "baz";
+
+        $data = [
+            "child" => [
+                "id" => $id,
+                "name" => $name,
+                "description" => $description1
+            ]
+        ];
+
+        $parent = new ParentClass($data);
+
+        $description2 = "fiz";
+        $update = [
+            "child" => [
+                "description" => $description2
+            ]
+        ];
+
+        $parent->updateData($update);
+
+        $child = $parent->getChild();
+
+        $this->assertSame($id, $child->getId());
+        $this->assertSame($name, $child->getName());
+        $this->assertSame($description2, $child->getDescription());
+    }
+
     public function setDataProvider(): array
     {
         $prop1Data = ["prop1" => "value1"];
