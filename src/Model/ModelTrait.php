@@ -42,7 +42,7 @@ trait ModelTrait
      * @throws \ReflectionException
      * @throws ModelException
      */
-    protected function loadData(array $data, bool $update = false, array $replaceCollections = [])
+    protected function loadData(array $data, bool $update = false, array $replaceCollections = []): void
     {
         foreach ($data as $prop => $value) {
 
@@ -52,6 +52,7 @@ trait ModelTrait
             }
             // studly caps the property name
             $prop = $this->toStudlyCaps($prop);
+            $camelProp = $this->mbLcfirst($prop);
 
             // look for setter first
             $setter = "set$prop";
@@ -74,15 +75,33 @@ trait ModelTrait
                         $param = $this->getFirstParameter($adder);
                         $isCollection = true;
                     }
-                    $value = $this->constructClasses($param, $value, $isCollection);
+
+                    // if this property is a ModelTrait and we're updating, run updateData on it instead of overwriting
+                    if ($update && !$isCollection && property_exists($this, $camelProp) && method_exists($this->{$camelProp}, "updateData")) {
+                        // filter out any collection names that aren't subcollections of this property
+                        $replaceSubCollections = array_filter(array_map(
+                            function ($collection) use ($camelProp) {
+                                return str_starts_with($collection, $camelProp . ".")
+                                    ? mb_substr($collection, mb_strlen($camelProp . "."))
+                                    : null;
+
+                            }, $replaceCollections
+                        ));
+
+                        $model = $this->{$camelProp};
+                        $model->updateData($value, $replaceSubCollections);
+                        $value = $model;
+                    } else {
+                        $value = $this->constructClasses($param, $value, $isCollection);
+                    }
 
                     // if we have a collection, and we're updating it ...
                     if (
                         $isCollection &&
                         $update &&
                         (
-                            empty($replaceCollections) ||               // don't add if we're replacing all collections
-                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been marked for replacing
+                            empty($replaceCollections) ||           // don't add if we're replacing all collections
+                            empty($replaceCollections[$camelProp])  // don't add if this collection has been marked for replacing
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
@@ -110,7 +129,7 @@ trait ModelTrait
      * @throws \ReflectionException
      * @throws ModelException
      */
-    public function updateData(array $data, array $replaceCollections = [])
+    public function updateData(array $data, array $replaceCollections = []): void
     {
         // only update if we're allowed
         if ($this->modelCanBeUpdated) {
