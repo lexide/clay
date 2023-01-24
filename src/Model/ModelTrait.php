@@ -42,7 +42,7 @@ trait ModelTrait
      * @throws \ReflectionException
      * @throws ModelException
      */
-    protected function loadData(array $data, bool $update = false, array $replaceCollections = [])
+    protected function loadData(array $data, bool $update = false, array $replaceCollections = []): void
     {
         foreach ($data as $prop => $value) {
 
@@ -52,6 +52,7 @@ trait ModelTrait
             }
             // studly caps the property name
             $prop = $this->toStudlyCaps($prop);
+            $camelProp = $this->mbLcfirst($prop);
 
             // look for setter first
             $setter = "set$prop";
@@ -74,15 +75,39 @@ trait ModelTrait
                         $param = $this->getFirstParameter($adder);
                         $isCollection = true;
                     }
-                    $value = $this->constructClasses($param, $value, $isCollection);
+
+                    // if this property is a ModelTrait and we're updating, run updateData on it instead of overwriting
+                    if (
+                        $update &&
+                        !$isCollection &&
+                        property_exists($this, $camelProp) &&
+                        is_object($this->{$camelProp}) &&
+                        method_exists($this->{$camelProp}, "updateData")
+                    ) {
+                        // filter out any collection names that aren't subcollections of this property
+                        $replaceSubCollections = array_filter(array_map(
+                            function ($collection) use ($camelProp) {
+                                return str_starts_with($collection, $camelProp . ".")
+                                    ? mb_substr($collection, mb_strlen($camelProp . "."))
+                                    : null;
+
+                            }, $replaceCollections
+                        ));
+
+                        $model = $this->{$camelProp};
+                        $model->updateData($value, $replaceSubCollections);
+                        $value = $model;
+                    } else {
+                        $value = $this->constructClasses($param, $value, $isCollection);
+                    }
 
                     // if we have a collection, and we're updating it ...
                     if (
                         $isCollection &&
                         $update &&
                         (
-                            empty($replaceCollections) ||               // don't add if we're replacing all collections
-                            empty($replaceCollections[$this->mbLcfirst($prop)])  // don't add if this collection has been marked for replacing
+                            empty($replaceCollections) ||           // don't add if we're replacing all collections
+                            empty($replaceCollections[$camelProp])  // don't add if this collection has been marked for replacing
                         )
                     ) {
                         // ... add each element instead of replacing the whole set
@@ -110,7 +135,7 @@ trait ModelTrait
      * @throws \ReflectionException
      * @throws ModelException
      */
-    public function updateData(array $data, array $replaceCollections = [])
+    public function updateData(array $data, array $replaceCollections = []): void
     {
         // only update if we're allowed
         if ($this->modelCanBeUpdated) {
@@ -119,9 +144,10 @@ trait ModelTrait
     }
 
     /**
+     * @param bool $excludeNulls
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $excludeNulls = false): array
     {
         $properties = get_object_vars($this);
         $data = [];
@@ -130,8 +156,12 @@ trait ModelTrait
             $getter = "get" . $this->mbUcfirst($prop);
             if (method_exists($this, $getter)) {
                 $value = $this->{$getter}();
-                $data[$prop] = $this->getValueData($value);
+                $data[$prop] = $this->getValueData($value, $excludeNulls);
             }
+        }
+
+        if ($excludeNulls) {
+            $data = array_filter($data, fn($value) => !is_null($value));
         }
         return $data;
     }
@@ -193,20 +223,21 @@ trait ModelTrait
 
     /**
      * @param mixed $value
+     * @param bool $excludeNulls
      * @return mixed
      */
-    private function getValueData(mixed $value): mixed
+    private function getValueData(mixed $value, bool $excludeNulls = false): mixed
     {
         $data = $value;
         if (is_array($value)) {
             foreach ($value as $i => $subValue) {
                 if (is_object($subValue) && method_exists($subValue, "toArray")) {
-                    $subValue = $subValue->toArray();
+                    $subValue = $subValue->toArray($excludeNulls);
                 }
                 $data[$i] = $subValue;
             }
         } elseif (is_object($value) && method_exists($value, "toArray")) {
-            $data = $value->toArray();
+            $data = $value->toArray($excludeNulls);
         }
 
         return $data;

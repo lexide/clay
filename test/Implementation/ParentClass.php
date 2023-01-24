@@ -5,9 +5,6 @@ namespace Lexide\Clay\Test\Implementation;
 use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\ModelTrait;
 
-/**
- * ParentClass
- */
 class ParentClass
 {
     use ModelTrait;
@@ -18,9 +15,14 @@ class ParentClass
     protected $single;
 
     /**
-     * @var array
+     * @var BaseClass[]
      */
     protected $multiple = [];
+
+    /**
+     * @var ChildClass
+     */
+    protected $child;
 
     /**
      * @param array $data
@@ -43,7 +45,7 @@ class ParentClass
     /**
      * @param BaseClass $single
      */
-    public function setSingle(BaseClass $single)
+    public function setSingle(BaseClass $single): void
     {
         $this->single = $single;
     }
@@ -59,7 +61,7 @@ class ParentClass
     /**
      * @param array $multiple
      */
-    public function setMultiple(array $multiple)
+    public function setMultiple(array $multiple): void
     {
         $this->multiple = [];
         foreach ($multiple as $single) {
@@ -70,11 +72,25 @@ class ParentClass
     /**
      * @param BaseClass $single
      */
-    public function addMultiple(BaseClass $single)
+    public function addMultiple(BaseClass $single): void
     {
         $this->multiple[] = $single;
     }
 
+    /**
+     * @param ChildClass $child
+     */
+    public function setChild(ChildClass $child): void
+    {
+        $this->child = $child;
+    }
 
+    /**
+     * @return ?ChildClass
+     */
+    public function getChild(): ?ChildClass
+    {
+        return $this->child;
+    }
 
 }
