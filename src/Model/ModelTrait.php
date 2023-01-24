@@ -81,7 +81,7 @@ trait ModelTrait
                         $update &&
                         !$isCollection &&
                         property_exists($this, $camelProp) &&
-                        is_object($this->{$camelProp}) && 
+                        is_object($this->{$camelProp}) &&
                         method_exists($this->{$camelProp}, "updateData")
                     ) {
                         // filter out any collection names that aren't subcollections of this property

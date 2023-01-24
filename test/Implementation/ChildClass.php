@@ -37,7 +37,7 @@ class ChildClass
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->id;
     }
@@ -45,7 +45,7 @@ class ChildClass
     /**
      * @return mixed
      */
-    public function getName()
+    public function getName(): mixed
     {
         return $this->name;
     }
@@ -53,7 +53,7 @@ class ChildClass
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription(): mixed
     {
         return $this->description;
     }
