@@ -77,7 +77,13 @@ trait ModelTrait
                     }
 
                     // if this property is a ModelTrait and we're updating, run updateData on it instead of overwriting
-                    if ($update && !$isCollection && property_exists($this, $camelProp) && method_exists($this->{$camelProp}, "updateData")) {
+                    if (
+                        $update &&
+                        !$isCollection &&
+                        property_exists($this, $camelProp) &&
+                        is_object($this->{$camelProp}) && 
+                        method_exists($this->{$camelProp}, "updateData")
+                    ) {
                         // filter out any collection names that aren't subcollections of this property
                         $replaceSubCollections = array_filter(array_map(
                             function ($collection) use ($camelProp) {
