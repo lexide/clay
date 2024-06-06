@@ -38,7 +38,7 @@ class ModelTraitTest extends TestCase
         // check data is as expected
         foreach ($expectedProperties as $prop => $value) {
             if ($value == "does not exist") {
-                $this->assertObjectNotHasAttribute($prop, $modelTrait);
+                $this->assertObjectNotHasProperty($prop, $modelTrait);
                 continue;
             }
 
