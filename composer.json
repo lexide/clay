@@ -13,7 +13,7 @@
   "require": {
     "php": ">=8.0",
     "ext-mbstring": "*",
-    "lexide/k-switch": "^2.0.0"
+    "lexide/k-switch": "2.0 - 2.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
