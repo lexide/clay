@@ -167,6 +167,17 @@ trait ModelTrait
     }
 
     /**
+     * This method satisfies the JsonSerializable interface.
+     * However, model classes need to implement the interface to use it
+     *
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray(true);
+    }
+
+    /**
      * @param string $method
      * @return \ReflectionParameter
      * @throws \ReflectionException

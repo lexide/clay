@@ -8,7 +8,7 @@ use Lexide\Clay\Model\ModelTrait;
 /**
  * a "Stub" class to implement the ModelTrait class
  */
-class ModelTraitImplementation 
+class ModelTraitImplementation implements \JsonSerializable
 {
     use ModelTrait;
 

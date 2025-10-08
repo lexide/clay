@@ -5,7 +5,7 @@ namespace Lexide\Clay\Test\Implementation;
 use Lexide\Clay\Exception\ModelException;
 use Lexide\Clay\Model\ModelTrait;
 
-class ParentClass
+class ParentClass implements \JsonSerializable
 {
     use ModelTrait;
 

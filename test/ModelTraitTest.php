@@ -99,6 +99,34 @@ class ModelTraitTest extends TestCase
         $this->assertSame($expected, $modelTrait->toArray(true));
     }
 
+    public function testSimpleJsonSerialisation()
+    {
+        $data = [
+            "prop1" => "foo",
+            "prop3" => "bar"
+        ];
+        $model = new ModelTraitImplementation($data);
+        $unserialisedModel = new ModelTraitImplementation(json_decode(json_encode($model), true));
+        $this->assertSame($data["prop1"], $unserialisedModel->getProp1());
+        $this->assertSame(null, $unserialisedModel->getProp2());
+        $this->assertSame($data["prop3"], $unserialisedModel->getProp3());
+    }
+
+    public function testNestedJsonSerialisation()
+    {
+        $data = [
+            "child" => [
+                "id" => 123,
+                "name" => "foo"
+            ]
+        ];
+        $model = new ParentClass($data);
+        $unserialisedModel = new ParentClass(json_decode(json_encode($model), true));
+        $this->assertSame($data["child"]["id"], $unserialisedModel->getChild()->getId());
+        $this->assertSame($data["child"]["name"], $unserialisedModel->getChild()->getName());
+        $this->assertSame(null, $unserialisedModel->getChild()->getDescription());
+    }
+
     /**
      * @dataProvider discriminationProvider
      *
